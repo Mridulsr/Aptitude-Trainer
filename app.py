@@ -7,33 +7,14 @@ import plotly.express as px
 
 # --- EXPANDED DATASET (TCS, COGNIZANT, WIPRO) ---
 # Sourced from a2zinterviews logic
-QUESTIONS = [
-    {
-        "id": 1, "company": "TCS", "topic": "Alligation or Mixture",
-        "question": "In what ratio must rice at Rs. 9.30 per kg be mixed with rice at Rs. 10.80 per kg so that the mixture be worth Rs. 10 per kg?",
-        "options": ["7:8", "8:7", "5:6", "6:5"], "answer": "8:7",
-        "explanation": "Ratio = (Dearer - Mean) : (Mean - Cheaper) = (10.80 - 10) : (10 - 9.30) = 0.80 : 0.70 = 8:7."
-    },
-    {
-        "id": 2, "company": "Cognizant", "topic": "Alligation or Mixture",
-        "question": "A container contains 40 litres of milk. 4 litres are taken out and replaced by water. This process is repeated twice more. How much milk is left?",
-        "options": ["26.34L", "27.36L", "28L", "29.16L"], "answer": "29.16L",
-        "explanation": "Formula: x(1 - y/x)^n => 40(1 - 4/40)^3 = 40 * (0.9)^3 = 29.16L."
-    },
-    {
-        "id": 3, "company": "TCS", "topic": "Profit and Loss",
-        "question": "A merchant sells sugar, part at 8% profit and rest at 18% profit. Total gain is 14%. If total sugar is 1000kg, find the amount sold at 18%.",
-        "options": ["400kg", "560kg", "600kg", "640kg"], "answer": "600kg",
-        "explanation": "Ratio = (18-14):(14-8) = 4:6 = 2:3. Part at 18% = (3/5)*1000 = 600kg."
-    },
-    {
-        "id": 4, "company": "Wipro", "topic": "Time and Work",
-        "question": "A can do work in 15 days, B in 20 days. They work together for 4 days. What fraction of work is left?",
-        "options": ["1/4", "1/10", "7/15", "8/15"], "answer": "8:15",
-        "explanation": "1 day work = (1/15 + 1/20) = 7/60. 4 days = 28/60 = 7/15. Left = 1 - 7/15 = 8/15."
-    }
-]
+# Replace the old QUESTIONS list with this:
+def load_all_questions():
+    if os.path.exists("questions.json"):
+        with open("questions.json", "r") as f:
+            return json.load(f)
+    return []
 
+QUESTIONS = load_all_questions()
 # --- DATABASE LOGIC ---
 DB_FILE = "user_stats.json"
 
@@ -137,3 +118,30 @@ else:
             st.session_state.current_q = 0
             st.session_state.score = 0
             st.rerun()
+
+# --- ADMIN PANEL FOR UPLOADING ---
+st.write("---")
+with st.expander("🛠 Admin: Upload New Question"):
+    with st.form("upload_form", clear_on_submit=True):
+        u_company = st.selectbox("Company", ["TCS", "Cognizant", "Wipro", "Infosys", "Other"])
+        u_topic = st.selectbox("Topic", ["Alligation or Mixture", "Profit and Loss", "Time and Work"])
+        u_q = st.text_area("Question Text")
+        u_opt = st.text_input("Options (comma-separated, e.g., A, B, C, D)")
+        u_ans = st.text_input("Correct Answer (must match one option exactly)")
+        u_exp = st.text_area("Explanation")
+        
+        if st.form_submit_button("Save to Question Bank"):
+            new_q = {
+                "id": len(QUESTIONS) + 1,
+                "company": u_company,
+                "topic": u_topic,
+                "question": u_q,
+                "options": [opt.strip() for opt in u_opt.split(",")],
+                "answer": u_ans,
+                "explanation": u_exp
+            }
+            # Add to local list and save to file
+            QUESTIONS.append(new_q)
+            with open("questions.json", "w") as f:
+                json.dump(QUESTIONS, f, indent=4)
+            st.success("New question added to the database!")
