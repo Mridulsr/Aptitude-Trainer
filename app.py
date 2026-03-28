@@ -124,7 +124,6 @@ QUESTIONS = [
     {"id": 98, "company": "Wipro", "topic": "Logical", "level": "Hard", "question": "If 1st Jan 2024 is Monday, what is 1st Jan 2025? (2024 is Leap)", "options": ["Tuesday", "Wednesday", "Thursday", "Friday"], "answer": "Wednesday", "explanation": "Leap year has 2 odd days. Monday + 2 = Wednesday."},
     {"id": 99, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "Square root of 0.0009?", "options": ["0.3", "0.03", "0.003", "3"], "answer": "0.03", "explanation": "0.03 * 0.03 = 0.0009."},
     {"id": 100, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "A sum of money at CI doubles in 5 years. In how many years will it be 8 times?", "options": ["10", "15", "20", "25"], "answer": "15", "explanation": "2^1 in 5 years. 8 = 2^3. Time = 5 * 3 = 15 years."}
-    }
 ]
 
 # --- APP CONFIG ---
