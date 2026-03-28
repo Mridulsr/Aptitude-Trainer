@@ -104,37 +104,26 @@ QUESTIONS = [
     {"id": 78, "company": "Wipro", "topic": "Arithmetic", "level": "Easy", "question": "Which of the following is a prime number?", "options": ["33", "81", "93", "97"], "answer": "97", "explanation": "97 is not divisible by any number other than 1 and itself."},
     {"id": 79, "company": "Infosys", "topic": "Logical", "level": "Hard", "question": "If 'white' is called 'blue', 'blue' is called 'red', 'red' is called 'yellow', 'yellow' is called 'green', 'green' is called 'black', 'black' is called 'violet' and 'violet' is called 'orange', what would be the color of human blood?", "options": ["Red", "Yellow", "Green", "Violet"], "answer": "Yellow", "explanation": "Human blood is red, but according to the code, red is called yellow."},
     {"id": 80, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "A and B together have Rs. 1210. If 4/15 of A's amount is equal to 2/5 of B's amount, how much amount does B have?", "options": ["Rs. 460", "Rs. 484", "Rs. 550", "Rs. 664"], "answer": "Rs. 484", "explanation": "(4/15)A = (2/5)B => A = (2/5)*(15/4)B = 3/2B. A + B = 3/2B + B = 5/2B = 1210. B = (1210 * 2)/5 = 484."}
-]
-[
-    {
-        "id": 86,
-        "company": "TCS",
-        "topic": "Data Interpretation",
-        "level": "Hard",
-        "question": "Data: Total Budget = 50 Lakhs. Education: 25%, Health: 15%, Infrastructure: 40%, Others: 20%. What is the central angle (in degrees) for the 'Infrastructure' sector in a Pie Chart?",
-        "options": ["144°", "120°", "150°", "108°"],
-        "answer": "144°",
-        "explanation": "To convert percentage to degrees: $(Percentage / 100) * 360$. So, $(40/100) * 360 = 144°$."
-    },
-    {
-        "id": 87,
-        "company": "Cognizant",
-        "topic": "Data Interpretation",
-        "level": "Hard",
-        "question": "A company's profit increased from $20M in 2024 to $25M in 2025. What is the percentage increase in profit?",
-        "options": ["20%", "25%", "5%", "30%"],
-        "answer": "25%",
-        "explanation": "Percentage Increase = $[(New - Old) / Old] * 100$. $[(25 - 20) / 20] * 100 = (5/20) * 100 = 25%$."
-    },
-    {
-        "id": 88,
-        "company": "Wipro",
-        "topic": "Data Interpretation",
-        "level": "Hard",
-        "question": "In a Bar Chart showing sales of 3 products (A, B, C) over 2 years: Year 1 (A:30, B:40, C:50), Year 2 (A:35, B:45, C:40). Which product showed the highest percentage growth?",
-        "options": ["Product A", "Product B", "Product C", "A and B both"],
-        "answer": "Product A",
-        "explanation": "A: (5/30)=16.6%. B: (5/40)=12.5%. C: Decreased. Product A has the highest growth rate."
+    {"id": 81, "company": "TCS", "topic": "Data Interpretation", "level": "Hard", "question": "Budget = 50L. Education: 25%, Health: 15%, Infrastructure: 40%, Others: 20%. Central angle for Infrastructure?", "options": ["144°", "120°", "150°", "108°"], "answer": "144°", "explanation": "(40/100) * 360 = 144°."},
+    {"id": 82, "company": "Cognizant", "topic": "Data Interpretation", "level": "Medium", "question": "Profit grew from $20M (2024) to $25M (2025). % Increase?", "options": ["20%", "25%", "5%", "30%"], "answer": "25%", "explanation": "[(25-20)/20]*100 = 25%."},
+    {"id": 83, "company": "Wipro", "topic": "Data Interpretation", "level": "Hard", "question": "Sales Year 1 (A:30, B:40, C:50), Year 2 (A:35, B:45, C:40). Highest % growth?", "options": ["Product A", "Product B", "Product C", "A and B both"], "answer": "Product A", "explanation": "A: 16.6%, B: 12.5%, C: Decrease."},
+    {"id": 84, "company": "Infosys", "topic": "Data Interpretation", "level": "Medium", "question": "Ratio of TCS hiring (1800) to Wipro hiring (900) in 2025?", "options": ["1:2", "2:1", "3:2", "4:3"], "answer": "2:1", "explanation": "1800/900 = 2/1."},
+    {"id": 85, "company": "Accenture", "topic": "Data Interpretation", "level": "Hard", "question": "Total Budget 1.2Cr. R&D is 35%. Amount in Lakhs?", "options": ["35L", "42L", "48L", "50L"], "answer": "42L", "explanation": "0.35 * 120 = 42 Lakhs."},
+    {"id": 86, "company": "TCS", "topic": "Data Interpretation", "level": "Hard", "question": "If hiring grows by 20% each year, and 2025 hiring was 1000, what was 2023 hiring?", "options": ["694", "750", "800", "833"], "answer": "694", "explanation": "1000 / (1.2 * 1.2) = 694.4."},
+    {"id": 87, "company": "Cognizant", "topic": "Data Interpretation", "level": "Medium", "question": "A bar chart shows 400, 500, 600, 700 units sold. What is the average?", "options": ["500", "550", "600", "650"], "answer": "550", "explanation": "(400+500+600+700)/4 = 550."},
+    {"id": 88, "company": "Wipro", "topic": "Data Interpretation", "level": "Hard", "question": "In a pie chart, if 'Others' is 18°, what percentage does it represent?", "options": ["5%", "10%", "15%", "20%"], "answer": "5%", "explanation": "(18/360) * 100 = 5%."},
+    {"id": 89, "company": "Infosys", "topic": "Data Interpretation", "level": "Medium", "question": "If 2024 revenue was 100Cr and 2025 is 150Cr, what is the ratio of increase to original?", "options": ["1:2", "2:3", "3:2", "1:1"], "answer": "1:2", "explanation": "Increase = 50. Ratio 50:100 = 1:2."},
+    {"id": 90, "company": "Accenture", "topic": "Data Interpretation", "level": "Hard", "question": "Population: Pune(3.1M), Bang(8.4M). How much % larger is Bang than Pune?", "options": ["150%", "170%", "270%", "100%"], "answer": "170%", "explanation": "[(8.4-3.1)/3.1]*100 = 170.9%."},
+    {"id": 91, "company": "TCS", "topic": "Data Interpretation", "level": "Medium", "question": "Table: A(10), B(20), C(30). What % of total is B?", "options": ["20%", "33.3%", "40%", "50%"], "answer": "33.3%", "explanation": "20 / (10+20+30) = 20/60 = 1/3."},
+    {"id": 92, "company": "Cognizant", "topic": "Data Interpretation", "level": "Hard", "question": "Central angle of 72° represents what % of a circle?", "options": ["20%", "25%", "15%", "30%"], "answer": "20%", "explanation": "(72/360)*100 = 20%."},
+    {"id": 93, "company": "Wipro", "topic": "Data Interpretation", "level": "Medium", "question": "Line graph: Jan(10), Feb(20), Mar(15). What is the % decrease from Feb to Mar?", "options": ["25%", "33%", "50%", "10%"], "answer": "25%", "explanation": "[(20-15)/20]*100 = 25%."},
+    {"id": 94, "company": "Infosys", "topic": "Data Interpretation", "level": "Hard", "question": "Total 500 students. 40% like Java, 30% Python. How many like neither if 10% like both?", "options": ["150", "200", "250", "300"], "answer": "200", "explanation": "Total liking = 40+30-10 = 60%. Neither = 40%. 40% of 500 = 200."},
+    {"id": 95, "company": "Accenture", "topic": "Data Interpretation", "level": "Medium", "question": "Revenue 2025: $400k. If it grows 10% for 2026, new revenue?", "options": ["$440k", "$410k", "$450k", "$480k"], "answer": "$440k", "explanation": "400 * 1.1 = 440."},
+    {"id": 96, "company": "TCS", "topic": "Data Interpretation", "level": "Hard", "question": "In a Venn Diagram of 100 people, 60 drink Tea, 50 drink Coffee. How many drink both?", "options": ["10", "20", "30", "40"], "answer": "10", "explanation": "(60+50) - 100 = 10."},
+    {"id": 97, "company": "Cognizant", "topic": "Arithmetic", "level": "Medium", "question": "Average of 10 numbers is 7. If each number is multiplied by 12, new average?", "options": ["7", "12", "84", "19"], "answer": "84", "explanation": "New Avg = Old Avg * 12 = 7 * 12 = 84."},
+    {"id": 98, "company": "Wipro", "topic": "Logical", "level": "Hard", "question": "If 1st Jan 2024 is Monday, what is 1st Jan 2025? (2024 is Leap)", "options": ["Tuesday", "Wednesday", "Thursday", "Friday"], "answer": "Wednesday", "explanation": "Leap year has 2 odd days. Monday + 2 = Wednesday."},
+    {"id": 99, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "Square root of 0.0009?", "options": ["0.3", "0.03", "0.003", "3"], "answer": "0.03", "explanation": "0.03 * 0.03 = 0.0009."},
+    {"id": 100, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "A sum of money at CI doubles in 5 years. In how many years will it be 8 times?", "options": ["10", "15", "20", "25"], "answer": "15", "explanation": "2^1 in 5 years. 8 = 2^3. Time = 5 * 3 = 15 years."}
     }
 ]
 
