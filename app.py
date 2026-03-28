@@ -104,6 +104,36 @@ QUESTIONS = [
     {"id": 78, "company": "Wipro", "topic": "Arithmetic", "level": "Easy", "question": "Which of the following is a prime number?", "options": ["33", "81", "93", "97"], "answer": "97", "explanation": "97 is not divisible by any number other than 1 and itself."},
     {"id": 79, "company": "Infosys", "topic": "Logical", "level": "Hard", "question": "If 'white' is called 'blue', 'blue' is called 'red', 'red' is called 'yellow', 'yellow' is called 'green', 'green' is called 'black', 'black' is called 'violet' and 'violet' is called 'orange', what would be the color of human blood?", "options": ["Red", "Yellow", "Green", "Violet"], "answer": "Yellow", "explanation": "Human blood is red, but according to the code, red is called yellow."},
     {"id": 80, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "A and B together have Rs. 1210. If 4/15 of A's amount is equal to 2/5 of B's amount, how much amount does B have?", "options": ["Rs. 460", "Rs. 484", "Rs. 550", "Rs. 664"], "answer": "Rs. 484", "explanation": "(4/15)A = (2/5)B => A = (2/5)*(15/4)B = 3/2B. A + B = 3/2B + B = 5/2B = 1210. B = (1210 * 2)/5 = 484."}
+{
+        "id": 86,
+        "company": "TCS",
+        "topic": "Data Interpretation",
+        "level": "Hard",
+        "question": "Data: Total Budget = 50 Lakhs. Education: 25%, Health: 15%, Infrastructure: 40%, Others: 20%. What is the central angle (in degrees) for the 'Infrastructure' sector in a Pie Chart?",
+        "options": ["144°", "120°", "150°", "108°"],
+        "answer": "144°",
+        "explanation": "To convert percentage to degrees: $(Percentage / 100) * 360$. So, $(40/100) * 360 = 144°$."
+    },
+    {
+        "id": 87,
+        "company": "Cognizant",
+        "topic": "Data Interpretation",
+        "level": "Hard",
+        "question": "A company's profit increased from $20M in 2024 to $25M in 2025. What is the percentage increase in profit?",
+        "options": ["20%", "25%", "5%", "30%"],
+        "answer": "25%",
+        "explanation": "Percentage Increase = $[(New - Old) / Old] * 100$. $[(25 - 20) / 20] * 100 = (5/20) * 100 = 25%$."
+    },
+    {
+        "id": 88,
+        "company": "Wipro",
+        "topic": "Data Interpretation",
+        "level": "Hard",
+        "question": "In a Bar Chart showing sales of 3 products (A, B, C) over 2 years: Year 1 (A:30, B:40, C:50), Year 2 (A:35, B:45, C:40). Which product showed the highest percentage growth?",
+        "options": ["Product A", "Product B", "Product C", "A and B both"],
+        "answer": "Product A",
+        "explanation": "A: (5/30)=16.6%. B: (5/40)=12.5%. C: Decreased. Product A has the highest growth rate."
+    }
 ]
 
 # --- APP CONFIG ---
