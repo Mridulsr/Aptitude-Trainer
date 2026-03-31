@@ -133,6 +133,106 @@ QUESTIONS = [
     {"id": 107, "company": "Wipro", "topic": "Logical", "level": "Hard", "question": "If 1st January 2023 was a Sunday, what day of the week was 1st January 2026?", "options": ["Wednesday", "Thursday", "Friday", "Saturday"], "answer": "Thursday", "explanation": "2023 (1 odd day), 2024 (2 odd days - Leap), 2025 (1 odd day). Total = 4 odd days. Sunday + 4 = Thursday."},
     {"id": 108, "company": "Wipro", "topic": "Logical", "level": "Medium", "question": "In a class of 45 students, Amir's rank is 16th from the top. What is his rank from the bottom?", "options": ["29th", "30th", "31st", "32nd"], "answer": "30th", "explanation": "Rank from bottom = (Total - Rank from top) + 1 = (45 - 16) + 1 = 30."},
     {"id": 109, "company": "Wipro", "topic": "Logical", "level": "Easy", "question": "Complete the series: B2CD, ____, BCD4, B5CD, BC6D", "options": ["BC3D", "B3CD", "BC3D2", "B2C2D"], "answer": "BC3D", "explanation": "The number moves positions from the 2nd char to the 3rd, 4th, and resets with a higher number. 2 (after B), 3 (after C), 4 (after D), then 5 (after B)."},
+    {
+    "id": 110,
+    "company": "TCS",
+    "topic": "Arithmetic",
+    "level": "Easy",
+    "question": "What is the sum of the first 15 odd numbers?",
+    "options": ["225", "200", "196", "256"],
+    "answer": "225",
+    "explanation": "The sum of the first n odd numbers is given by n^2. Here n = 15, so 15^2 = 225."
+  },
+  {
+    "id": 111,
+    "company": "TCS",
+    "topic": "Logical",
+    "level": "Easy",
+    "question": "If DRIVER = 12, PEDESTRIAN = 20, ACCIDENT = 16, then what is CAR?",
+    "options": ["3", "6", "8", "10"],
+    "answer": "6",
+    "explanation": "The pattern is (Number of letters in the word) * 2. CAR has 3 letters, so 3 * 2 = 6."
+  },
+  {
+    "id": 120,
+    "company": "TCS",
+    "topic": "Arithmetic",
+    "level": "Hard",
+    "question": "A man's speed with the current is 15 km/hr and the speed of the current is 2.5 km/hr. What is the man's speed against the current?",
+    "options": ["8.5 km/hr", "9 km/hr", "10 km/hr", "12.5 km/hr"],
+    "answer": "10 km/hr",
+    "explanation": "Speed in still water = Speed with current - current speed = 15 - 2.5 = 12.5 km/hr. Speed against current = Still water speed - current speed = 12.5 - 2.5 = 10 km/hr."
+  },
+  {
+    "id": 130,
+    "company": "Infosys",
+    "topic": "Arithmetic",
+    "level": "Easy",
+    "question": "Solve: 0.003 * 0.02",
+    "options": ["0.06", "0.006", "0.0006", "0.00006"],
+    "answer": "0.00006",
+    "explanation": "Multiply the numbers: 3 * 2 = 6. Count decimal places: 3 + 2 = 5 places. Result = 0.00006."
+  },
+  {
+    "id": 140,
+    "company": "Infosys",
+    "topic": "Arithmetic",
+    "level": "Hard",
+    "question": "A card is drawn from a pack of 52. What is the probability that it is either a King or a Heart?",
+    "options": ["4/13", "17/52", "1/4", "1/13"],
+    "answer": "4/13",
+    "explanation": "P(King) = 4/52, P(Heart) = 13/52, P(King of Hearts) = 1/52. P(K or H) = (4+13-1)/52 = 16/52 = 4/13."
+  },
+  {
+    "id": 150,
+    "company": "Wipro",
+    "topic": "Arithmetic",
+    "level": "Easy",
+    "question": "What is the square root of 0.0009?",
+    "options": ["0.3", "0.03", "0.003", "0.9"],
+    "answer": "0.03",
+    "explanation": "0.03 * 0.03 = 0.0009. Therefore, the square root is 0.03."
+  },
+  {
+    "id": 160,
+    "company": "Wipro",
+    "topic": "Arithmetic",
+    "level": "Hard",
+    "question": "A sum of money becomes 8 times itself in 3 years at compound interest. What is the rate of interest per annum?",
+    "options": ["50%", "100%", "150%", "200%"],
+    "answer": "100%",
+    "explanation": "8P = P(1 + R/100)^3 => 2^3 = (1 + R/100)^3 => 2 = 1 + R/100 => R = 100%."
+  },
+  {
+    "id": 170,
+    "company": "Accenture",
+    "topic": "Arithmetic",
+    "level": "Easy",
+    "question": "What is 20% of 50 + 50% of 20?",
+    "options": ["10", "20", "30", "40"],
+    "answer": "20",
+    "explanation": "20% of 50 = 10. 50% of 20 = 10. 10 + 10 = 20."
+  },
+  {
+    "id": 180,
+    "company": "Accenture",
+    "topic": "Arithmetic",
+    "level": "Hard",
+    "question": "A shopkeeper marks his goods 20% above the cost price and allows a 10% discount. What is his profit percentage?",
+    "options": ["8%", "10%", "12%", "15%"],
+    "answer": "8%",
+    "explanation": "Let CP = 100. Marked Price = 120. Discount = 10% of 120 = 12. SP = 120 - 12 = 108. Profit = 8%."
+  },
+  {
+    "id": 200,
+    "company": "Cognizant",
+    "topic": "Arithmetic",
+    "level": "Hard",
+    "question": "A man's present age is 2/5 of his mother's. After 8 years, he will be 1/2 of his mother's age. How old is the mother now?",
+    "options": ["30", "40", "50", "60"],
+    "answer": "40",
+    "explanation": "Let Mother = M, Son = 2/5 M. (2/5 M + 8) = 1/2 (M + 8). Solve for M: 0.4M + 8 = 0.5M + 4 => 0.1M = 4 => M = 40."
+  }
 ]
 
 # --- APP CONFIG ---
