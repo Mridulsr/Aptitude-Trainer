@@ -133,16 +133,7 @@ QUESTIONS = [
     {"id": 107, "company": "Wipro", "topic": "Logical", "level": "Hard", "question": "If 1st January 2023 was a Sunday, what day of the week was 1st January 2026?", "options": ["Wednesday", "Thursday", "Friday", "Saturday"], "answer": "Thursday", "explanation": "2023 (1 odd day), 2024 (2 odd days - Leap), 2025 (1 odd day). Total = 4 odd days. Sunday + 4 = Thursday."},
     {"id": 108, "company": "Wipro", "topic": "Logical", "level": "Medium", "question": "In a class of 45 students, Amir's rank is 16th from the top. What is his rank from the bottom?", "options": ["29th", "30th", "31st", "32nd"], "answer": "30th", "explanation": "Rank from bottom = (Total - Rank from top) + 1 = (45 - 16) + 1 = 30."},
     {"id": 109, "company": "Wipro", "topic": "Logical", "level": "Easy", "question": "Complete the series: B2CD, ____, BCD4, B5CD, BC6D", "options": ["BC3D", "B3CD", "BC3D2", "B2C2D"], "answer": "BC3D", "explanation": "The number moves positions from the 2nd char to the 3rd, 4th, and resets with a higher number. 2 (after B), 3 (after C), 4 (after D), then 5 (after B)."},
-    {
-    "id": 110,
-    "company": "TCS",
-    "topic": "Arithmetic",
-    "level": "Easy",
-    "question": "What is the sum of the first 15 odd numbers?",
-    "options": ["225", "200", "196", "256"],
-    "answer": "225",
-    "explanation": "The sum of the first n odd numbers is given by n^2. Here n = 15, so 15^2 = 225."
-  },
+    {"id": 110,"company": "TCS","topic": "Arithmetic","level": "Easy","question": "What is the sum of the first 15 odd numbers?","options": ["225", "200", "196", "256"],"answer": "225","explanation": "The sum of the first n odd numbers is given by n^2. Here n = 15, so 15^2 = 225."},
   {
     "id": 111,
     "company": "TCS",
@@ -333,6 +324,34 @@ QUESTIONS = [
   {"id": 207, "company": "Cognizant", "topic": "Logical", "level": "Hard", "question": "No paper is pen. Some pens are pencils. Conclusion?", "options": ["Some pencils are pens", "Some pencils are papers", "Both", "None"], "answer": "Some pencils are pens", "explanation": "Converse of 'Some pens are pencils'."},
   {"id": 208, "company": "Cognizant", "topic": "Arithmetic", "level": "Hard", "question": "CI on 5000 for 1.5 yrs at 4% compounded half-yearly?", "options": ["306.04", "300", "310", "320"], "answer": "306.04", "explanation": "5000(1.02)^3 - 5000."},
   {"id": 209, "company": "Cognizant", "topic": "Data Interpretation", "level": "Hard", "question": "Sales Jan: 100, Feb: 120, Mar: 110. Average?", "options": ["100", "110", "120", "115"], "answer": "110", "explanation": "330/3 = 110."},
+    {"id": 102, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "The sum of two numbers is 25 and their difference is 13. Find their product.", "options": ["104", "114", "315", "325"], "answer": "114", "explanation": "x+y=25, x-y=13. Adding gives 2x=38, x=19. Then y=6. Product = 19*6 = 114."},
+    {"id": 103, "company": "TCS", "topic": "Arithmetic", "level": "Medium", "question": "What is the remainder when 2^31 is divided by 7?", "options": ["1", "2", "3", "4"], "answer": "2", "explanation": "2^3 = 8. 8/7 leaves remainder 1. (2^3)^10 * 2^1 = 1^10 * 2 = 2."},
+    {"id": 104, "company": "TCS", "topic": "Programming Logic", "level": "Hard", "question": "In C, what is the output of printf('%d', 10 ? 0 ? 5 : 11 : 12);?", "options": ["10", "0", "11", "12"], "answer": "11", "explanation": "Nested ternary: 10 is true, so it evaluates (0 ? 5 : 11). 0 is false, so it results in 11."},
+    {"id": 105, "company": "TCS", "topic": "Arithmetic", "level": "Advanced", "question": "A sum of money amounts to Rs. 6690 after 3 years and to Rs. 10035 after 6 years on compound interest. Find the sum.", "options": ["4460", "4400", "4500", "4660"], "answer": "4460", "explanation": "Ratio of amounts = 10035/6690 = 1.5. P * (1.5) = 6690. P = 6690 / 1.5 = 4460."},
+
+    # --- COGNIZANT (Logical Reasoning & Verbal) ---
+    {"id": 106, "company": "Cognizant", "topic": "Logical", "level": "Easy", "question": "If FISH is coded as EHRG, what is the code for JUNGLE?", "options": ["ITMFKD", "ITMFLD", "KVOHMF", "TIMFKD"], "answer": "ITMFKD", "explanation": "Each letter is shifted one position backward (F-1=E, I-1=H, etc.)."},
+    {"id": 107, "company": "Cognizant", "topic": "Logical", "level": "Medium", "question": "A man walks 5km South, then turns right and walks 3km. He then turns left and walks 5km. In which direction is he from the starting point?", "options": ["South", "South-West", "South-East", "North-West"], "answer": "South-West", "explanation": "Starting at origin (0,0), he goes to (0,-5), then (-3,-5), then (-3,-10). This is South-West."},
+    {"id": 108, "company": "Cognizant", "topic": "Verbal", "level": "Hard", "question": "Choose the correct sentence:", "options": ["He is one of the best man in the world.", "He is one of the best men in the world.", "He is one of the better men in the world.", "He is one of best men in the world."], "answer": "He is one of the best men in the world.", "explanation": "'One of the' is followed by a plural noun and a superlative adjective."},
+    {"id": 109, "company": "Cognizant", "topic": "Logical", "level": "Advanced", "question": "Statements: All bags are pockets. All pockets are pouches. Conclusion: I. All bags are pouches. II. Some pouches are bags.", "options": ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"], "answer": "Both I and II follow", "explanation": "Standard syllogism. Since Bags ⊂ Pockets ⊂ Pouches, All bags are pouches. Consequently, some pouches are bags."},
+
+    # --- WIPRO (Quantitative & Analytical) ---
+    {"id": 110, "company": "Wipro", "topic": "Arithmetic", "level": "Easy", "question": "The average of 5 numbers is 27. If one number is excluded, the average becomes 25. Find the excluded number.", "options": ["30", "35", "40", "45"], "answer": "35", "explanation": "Sum of 5 = 5*27 = 135. Sum of 4 = 4*25 = 100. Excluded = 135 - 100 = 35."},
+    {"id": 111, "company": "Wipro", "topic": "Arithmetic", "level": "Medium", "question": "A can do a work in 15 days, B in 20 days. They work together for 4 days. What fraction of work is left?", "options": ["7/15", "8/15", "11/15", "1/4"], "answer": "8/15", "explanation": "1 day work = 1/15 + 1/20 = 7/60. 4 days work = 28/60 = 7/15. Left = 1 - 7/15 = 8/15."},
+    {"id": 112, "company": "Wipro", "topic": "Arithmetic", "level": "Hard", "question": "A motorboat whose speed is 15 km/hr in still water goes 30 km downstream and comes back in a total of 4 hours 30 minutes. The speed of the stream (in km/hr) is:", "options": ["4", "5", "6", "10"], "answer": "5", "explanation": "30/(15+x) + 30/(15-x) = 4.5. Solving for x, we get x=5."},
+    {"id": 113, "company": "Wipro", "topic": "Logical", "level": "Advanced", "question": "Find the missing number: 2, 6, 12, 20, 30, 42, ?", "options": ["50", "52", "54", "56"], "answer": "56", "explanation": "The differences are 4, 6, 8, 10, 12. Next difference is 14. 42 + 14 = 56."},
+
+    # --- INFOSYS (Puzzles & Mathematical) ---
+    {"id": 114, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "A clock strikes once at 1 o’clock, twice at 2 o’clock, and so on. How many times will it strike in 24 hours?", "options": ["78", "156", "200", "300"], "answer": "156", "explanation": "Strikes in 12 hours = 1+2+...+12 = 78. In 24 hours = 78 * 2 = 156."},
+    {"id": 115, "company": "Infosys", "topic": "Arithmetic", "level": "Medium", "question": "Find the number of ways in which 5 boys and 5 girls can be seated in a row so that no two girls are together.", "options": ["5! * 6!", "5! * 5!", "10!", "None"], "answer": "5! * 6!", "explanation": "Arrange 5 boys (5!). There are 6 gaps for 5 girls (6P5). Result: 5! * 6! / 1! = 5! * 6!."},
+    {"id": 116, "company": "Infosys", "topic": "Arithmetic", "level": "Hard", "question": "If 1.5x = 0.04y, then the value of (y-x)/(y+x) is:", "options": ["73/77", "73/75", "70/77", "11/15"], "answer": "73/77", "explanation": "x/y = 0.04/1.5 = 4/150 = 2/75. Let x=2, y=75. (75-2)/(75+2) = 73/77."},
+    {"id": 117, "company": "Infosys", "topic": "Puzzle", "level": "Advanced", "question": "There are 8 identical-looking gold coins, but one is fake and weighs slightly less. Using a balance scale, what is the minimum number of weighings to find it?", "options": ["2", "3", "4", "8"], "answer": "2", "explanation": "Group into 3, 3, 2. Weigh 3 vs 3. If equal, fake is in the 2. If unequal, fake is in the lighter 3. One more weighing confirms."},
+
+    # --- ACCENTURE (Analytical & Critical) ---
+    {"id": 118, "company": "Accenture", "topic": "Arithmetic", "level": "Easy", "question": "What is the value of 12.5% of 800?", "options": ["100", "125", "80", "160"], "answer": "100", "explanation": "12.5% is 1/8. 800 / 8 = 100."},
+    {"id": 119, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "In a certain code, '256' means 'you are good', '637' means 'we are bad', and '358' means 'good and bad'. Which digit means 'and'?", "options": ["2", "5", "8", "3"], "answer": "8", "explanation": "Comparing 256 and 358, 'good' is 5. Comparing 637 and 358, 'bad' is 3. Remaining in 358 is 8, which means 'and'."},
+    {"id": 120, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money at simple interest amounts to Rs. 2240 in 2 years and Rs. 2600 in 5 years. Find the interest rate.", "options": ["5%", "6%", "10%", "12%"], "answer": "6%", "explanation": "SI for 3 years = 2600-2240 = 360. SI for 1 year = 120. P = 2240 - (120*2) = 2000. R = (120/2000)*100 = 6%."},
+    {"id": 121, "company": "Accenture", "topic": "Verbal", "level": "Advanced", "question": "Identify the synonym for 'Ephemeral':", "options": ["Eternal", "Short-lived", "Useless", "Beautiful"], "answer": "Short-lived", "explanation": "Ephemeral refers to something lasting for a very short time."}
 ]
 
 # --- APP CONFIG ---
