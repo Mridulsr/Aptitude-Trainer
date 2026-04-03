@@ -583,7 +583,7 @@ with col_c:
 pool = [q for q in QUESTIONS if 
         (target_comp == "All" or q["company"] == target_comp) and 
         (target_topic == "All" or q["topic"] == target_topic) and
-        (q["level"] == target_level)]
+        (q.get("level") == target_level)]
 
 if not pool:
     st.warning("No questions match your specific level filter for this company/topic. Showing all levels for your selection instead.")
