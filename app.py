@@ -351,7 +351,187 @@ QUESTIONS = [
     {"id": 118, "company": "Accenture", "topic": "Arithmetic", "level": "Easy", "question": "What is the value of 12.5% of 800?", "options": ["100", "125", "80", "160"], "answer": "100", "explanation": "12.5% is 1/8. 800 / 8 = 100."},
     {"id": 119, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "In a certain code, '256' means 'you are good', '637' means 'we are bad', and '358' means 'good and bad'. Which digit means 'and'?", "options": ["2", "5", "8", "3"], "answer": "8", "explanation": "Comparing 256 and 358, 'good' is 5. Comparing 637 and 358, 'bad' is 3. Remaining in 358 is 8, which means 'and'."},
     {"id": 120, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money at simple interest amounts to Rs. 2240 in 2 years and Rs. 2600 in 5 years. Find the interest rate.", "options": ["5%", "6%", "10%", "12%"], "answer": "6%", "explanation": "SI for 3 years = 2600-2240 = 360. SI for 1 year = 120. P = 2240 - (120*2) = 2000. R = (120/2000)*100 = 6%."},
-    {"id": 121, "company": "Accenture", "topic": "Verbal", "level": "Advanced", "question": "Identify the synonym for 'Ephemeral':", "options": ["Eternal", "Short-lived", "Useless", "Beautiful"], "answer": "Short-lived", "explanation": "Ephemeral refers to something lasting for a very short time."}
+    {"id": 121, "company": "Accenture", "topic": "Verbal", "level": "Advanced", "question": "Identify the synonym for 'Ephemeral':", "options": ["Eternal", "Short-lived", "Useless", "Beautiful"], "answer": "Short-lived", "explanation": "Ephemeral refers to something lasting for a very short time."},
+{
+    "id": 1,
+    "topic": "Alligation or Mixture",
+    "company": "HCL",
+    "question": "In what ratio must a grocer mix two varieties of tea worth 60 per kg and 65 per kg so that by selling the mixture at 68.20 per kg he may gain 10%?",
+    "options": ["3:2", "3:4", "3:5", "4:5"],
+    "answer": "3:2",
+    "explanation": "SP = 68.20, Profit = 10%. CP = (100/110) * 68.20 = 62. By Alligation: (65 - 62) : (62 - 60) = 3 : 2."
+  },
+  {
+    "id": 2,
+    "topic": "Permutation and Combination",
+    "company": "Capgemini",
+    "question": "How many 3-digit numbers can be formed from the digits 2, 3, 5, 6, 7 and 9, which are divisible by 5 and none of the digits is repeated?",
+    "options": ["5", "10", "15", "20"],
+    "answer": "20",
+    "explanation": "For a number to be divisible by 5, the unit digit must be 5. Remaining 2 places can be filled by 5 remaining digits: 5 * 4 = 20."
+  },
+  {
+    "id": 3,
+    "topic": "Simple Interest",
+    "company": "Tech Mahindra",
+    "question": "A sum of money at simple interest amounts to 815 in 3 years and to 854 in 4 years. The sum is:",
+    "options": ["650", "690", "698", "700"],
+    "answer": "698",
+    "explanation": "SI for 1 year = 854 - 815 = 39. SI for 3 years = 39 * 3 = 117. Principal = 815 - 117 = 698."
+  },
+  {
+    "id": 4,
+    "topic": "Time and Work",
+    "company": "Mindtree",
+    "question": "A is thrice as efficient as B and takes 60 days less than B to finish a work. In how many days can they finish it together?",
+    "options": ["22 days", "22.5 days", "23 days", "25 days"],
+    "answer": "22.5 days",
+    "explanation": "Efficiency A:B = 3:1. Time A:B = 1:3. Difference 2 units = 60 days. A = 30, B = 90. Together = (30*90)/(30+90) = 22.5."
+  },
+  {
+    "id": 5,
+    "topic": "Logarithm",
+    "company": "LTI",
+    "question": "If log 2 = 0.30103, find the number of digits in 2^64.",
+    "options": ["18", "19", "20", "21"],
+    "answer": "20",
+    "explanation": "log(2^64) = 64 * 0.30103 = 19.2659. Number of digits = Characteristic + 1 = 19 + 1 = 20."
+  },
+  {
+    "id": 6,
+    "topic": "Problems on Trains",
+    "company": "DXC Technology",
+    "question": "A train 125 m long passes a man, running at 5 kmph in the same direction in which the train is going, in 10 seconds. The speed of the train is:",
+    "options": ["45 kmph", "50 kmph", "54 kmph", "55 kmph"],
+    "answer": "50 kmph",
+    "explanation": "Relative speed = 125/10 = 12.5 m/s = 45 kmph. Let train speed be x. x - 5 = 45 => x = 50 kmph."
+  },
+  {
+    "id": 7,
+    "topic": "Boats and Streams",
+    "company": "Hexaware",
+    "question": "A boat can travel with a speed of 13 kmph in still water. If the speed of the stream is 4 kmph, find the time taken by the boat to go 68 km downstream.",
+    "options": ["2 hours", "3 hours", "4 hours", "5 hours"],
+    "answer": "4 hours",
+    "explanation": "Downstream speed = 13 + 4 = 17 kmph. Time = 68/17 = 4 hours."
+  },
+  {
+    "id": 8,
+    "topic": "Area",
+    "company": "IBM",
+    "question": "The diagonal of a rectangle is 17 cm long and its perimeter is 46 cm. The area of the rectangle is:",
+    "options": ["100 cm²", "110 cm²", "120 cm²", "130 cm²"],
+    "answer": "120 cm²",
+    "explanation": "l + b = 23, l² + b² = 17² = 289. (l+b)² = l²+b²+2lb => 529 = 289 + 2lb => 2lb = 240 => lb = 120."
+  },
+  {
+    "id": 9,
+    "topic": "Percentage",
+    "company": "Mphasis",
+    "question": "If 20% of a = b, then b% of 20 is the same as:",
+    "options": ["4% of a", "5% of a", "20% of a", "None"],
+    "answer": "4% of a",
+    "explanation": "b = 0.2a. b% of 20 = (b/100)*20 = (0.2a/100)*20 = 0.04a = 4% of a."
+  },
+  {
+    "id": 10,
+    "topic": "Problems on Ages",
+    "company": "Virtusa",
+    "question": "The ratio of present ages of P and Q is 3:4. 5 years ago, the ratio was 2:3. What is the present age of P?",
+    "options": ["10", "12", "15", "20"],
+    "answer": "15",
+    "explanation": "(3x-5)/(4x-5) = 2/3. 9x - 15 = 8x - 10. x = 5. P = 3 * 5 = 15."
+  },
+  {
+    "id": 11,
+    "topic": "Decimal Fraction",
+    "company": "CGI",
+    "question": "The value of (0.1 * 0.1 * 0.1 + 0.02 * 0.02 * 0.02) / (0.2 * 0.2 * 0.2 + 0.04 * 0.04 * 0.04) is:",
+    "options": ["0.125", "0.25", "0.5", "0.0625"],
+    "answer": "0.125",
+    "explanation": "The denominator is 2³ = 8 times the numerator. So, 1/8 = 0.125."
+  },
+  {
+    "id": 12,
+    "topic": "Average",
+    "company": "Societe Generale",
+    "question": "The average of 20 numbers is zero. Of them, at the most, how many may be greater than zero?",
+    "options": ["0", "1", "10", "19"],
+    "answer": "19",
+    "explanation": "If 19 numbers are positive, the 20th number can be a negative value equal to the sum of the 19 numbers, making the total sum zero."
+  },
+  {
+    "id": 13,
+    "topic": "Compound Interest",
+    "company": "Verizon",
+    "question": "The compound interest on 30,000 at 7% per annum is 4347. The period (in years) is:",
+    "options": ["2", "2.5", "3", "4"],
+    "answer": "2",
+    "explanation": "Amount = 34347. 30000(1.07)^n = 34347. (1.07)^n = 1.1449. Since 1.07 * 1.07 = 1.1449, n = 2."
+  },
+  {
+    "id": 14,
+    "topic": "HCF and LCM",
+    "company": "Oracle",
+    "question": "The HCF of two numbers is 11 and their LCM is 693. If one number is 77, find the other.",
+    "options": ["88", "99", "101", "110"],
+    "answer": "99",
+    "explanation": "Product of numbers = HCF * LCM. 77 * x = 11 * 693. x = (11 * 693) / 77 = 99."
+  },
+  {
+    "id": 15,
+    "topic": "Probability",
+    "company": "Goldman Sachs",
+    "question": "In a box, there are 8 red, 7 blue and 6 green balls. One ball is picked up randomly. What is the probability that it is neither red nor green?",
+    "options": ["1/3", "7/21", "8/21", "9/21"],
+    "answer": "1/3",
+    "explanation": "Neither red nor green means blue. Total balls = 21. Blue balls = 7. Prob = 7/21 = 1/3."
+  },
+  {
+    "id": 16,
+    "topic": "Profit and Loss",
+    "company": "Amazon",
+    "question": "If selling price is doubled, the profit triples. Find the profit percent.",
+    "options": ["66.66%", "100%", "105%", "120%"],
+    "answer": "100%",
+    "explanation": "Let CP = x, SP = y. Profit = y - x. 3(y - x) = 2y - x => y = 2x. Profit = 2x - x = x. % = (x/x) * 100 = 100%."
+  },
+  {
+    "id": 17,
+    "topic": "Time and Distance",
+    "company": "Microsoft",
+    "question": "Excluding stoppages, the speed of a bus is 54 kmph and including stoppages, it is 45 kmph. For how many minutes does the bus stop per hour?",
+    "options": ["9", "10", "12", "15"],
+    "answer": "10",
+    "explanation": "Time of rest = (Difference in speed / Speed without stoppages). (54-45)/54 = 9/54 = 1/6 hour = 10 minutes."
+  },
+  {
+    "id": 18,
+    "topic": "Surds and Indices",
+    "company": "Google",
+    "question": "If (1/5)^3y = 0.008, then the value of (0.25)^y is:",
+    "options": ["0.25", "0.5", "0.625", "1"],
+    "answer": "0.25",
+    "explanation": "(0.2)^3y = (0.2)^3 => 3y = 3 => y = 1. (0.25)^1 = 0.25."
+  },
+  {
+    "id": 19,
+    "topic": "Simplification",
+    "company": "Adobe",
+    "question": "3/4 of 2/3 of 1/2 of 480 is:",
+    "options": ["60", "120", "240", "300"],
+    "answer": "120",
+    "explanation": "(3/4) * (2/3) * (1/2) * 480 = (1/4) * 480 = 120."
+  },
+  {
+    "id": 20,
+    "topic": "Partnership",
+    "company": "Samsung",
+    "question": "A, B and C invest 2000, 3000 and 4000 in a business. After one year, the profit is 900. B's share is:",
+    "options": ["200", "300", "400", "500"],
+    "answer": "300",
+    "explanation": "Ratio of investment = 2:3:4. Total parts = 9. B's share = (3/9) * 900 = 300."
+  }
 ]
 
 # --- APP CONFIG ---
