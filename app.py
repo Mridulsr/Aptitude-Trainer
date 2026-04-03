@@ -531,7 +531,36 @@ QUESTIONS = [
     "options": ["200", "300", "400", "500"],
     "answer": "300",
     "explanation": "Ratio of investment = 2:3:4. Total parts = 9. B's share = (3/9) * 900 = 300."
-  }
+  },
+{"id": 1, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the unit digit in (7^95 - 3^58)?", "options": ["0", "4", "6", "7"], "answer": "4", "explanation": "7^95 ends in 3, 3^58 ends in 9. 13-9=4."},
+    {"id": 2, "company": "Virtusa", "topic": "Arithmetic", "level": "Medium", "question": "The ratio of present ages of P and Q is 3:4. 5 years ago, the ratio was 2:3. What is the present age of P?", "options": ["10", "12", "15", "20"], "answer": "15", "explanation": "3x-5/4x-5 = 2/3 => x=5. P=15."},
+    {"id": 3, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money at CI amounts to thrice itself in 3 years. In how many years will it be 9 times itself?", "options": ["6", "9", "12", "15"], "answer": "6", "explanation": "3^1 in 3 yrs, 3^2 (9) in 3*2=6 yrs."},
+    {"id": 4, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "Find the HCF of 2/3, 8/9, 64/81.", "options": ["2/81", "2/3", "8/81", "1/3"], "answer": "2/81", "explanation": "HCF(num)/LCM(den) = 2/81."},
+    
+    # --- DATA INTERPRETATION ---
+    {"id": 5, "company": "Virtusa", "topic": "Data Interpretation", "level": "Easy", "question": "In a pie chart, a sector represents 20% of the total. What is its central angle?", "options": ["36°", "72°", "90°", "108°"], "answer": "72°", "explanation": "20% of 360 = 0.2 * 360 = 72°."},
+    {"id": 6, "company": "Wipro", "topic": "Data Interpretation", "level": "Medium", "question": "Revenue grew from 100Cr to 150Cr. What is the percentage increase?", "options": ["25%", "50%", "75%", "100%"], "answer": "50%", "explanation": "(50/100)*100 = 50%."},
+    {"id": 7, "company": "Capgemini", "topic": "Data Interpretation", "level": "Hard", "question": "If the ratio of Import to Export is 0.65, and Imports are 650 units, what are Exports?", "options": ["1000", "800", "1200", "900"], "answer": "1000", "explanation": "650/x = 0.65 => x = 1000."},
+    
+    # --- LOGICAL REASONING ---
+    {"id": 8, "company": "Cognizant", "topic": "Logical", "level": "Easy", "question": "Complete the series: 2, 6, 12, 20, 30, ?", "options": ["36", "40", "42", "48"], "answer": "42", "explanation": "Differences are 4, 6, 8, 10, 12. 30+12=42."},
+    {"id": 9, "company": "HCL", "topic": "Logical", "level": "Medium", "question": "If 'CUP' is 40, what is 'KITE'?", "options": ["45", "48", "50", "52"], "answer": "45", "explanation": "Sum of alphabet positions: K(11)+I(9)+T(20)+E(5) = 45."},
+    {"id": 10, "company": "IBM", "topic": "Logical", "level": "Hard", "question": "If A+B means A is daughter of B, A-B means A is husband of B, what does P-Q+R mean?", "options": ["P is father of Q", "P is son-in-law of R", "P is brother of R", "None"], "answer": "P is son-in-law of R", "explanation": "Q is daughter of R, P is husband of Q. So P is R's son-in-law."},
+{"id": 11, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the LCM of 12, 18, and 24?", "options": ["48", "72", "96", "120"], "answer": "72", "explanation": "12=2^2*3, 18=2*3^2, 24=2^3*3. LCM = 2^3 * 3^2 = 72."},
+    {"id": 12, "company": "Infosys", "topic": "Arithmetic", "level": "Medium", "question": "A can do work in 10 days, B in 15 days. They work together for 2 days, then A leaves. How long for B to finish?", "options": ["8 days", "10 days", "12 days", "15 days"], "answer": "10 days", "explanation": "Combined 1-day work = 1/10 + 1/15 = 1/6. 2 days = 1/3. Remaining 2/3 done by B in (2/3)*15 = 10 days."},
+    {"id": 13, "company": "Wipro", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money doubles itself in 10 years at SI. In how many years will it triple?", "options": ["15", "20", "25", "30"], "answer": "20", "explanation": "To double, SI=P. To triple, SI=2P. If P takes 10 years, 2P takes 20 years."},
+    {"id": 14, "company": "Virtusa", "topic": "Arithmetic", "level": "Easy", "question": "What is 15% of 200?", "options": ["20", "30", "40", "50"], "answer": "30", "explanation": "0.15 * 200 = 30."},
+    
+    # --- DATA INTERPRETATION (Focusing on Virtusa/TCS) ---
+    {"id": 15, "company": "Virtusa", "topic": "Data Interpretation", "level": "Medium", "question": "In a bar graph, if X-axis represents Years and Y-axis represents Sales (in millions), and Sales for 2024 is 40 and 2025 is 60, what is the growth rate?", "options": ["20%", "40%", "50%", "60%"], "answer": "50%", "explanation": "Growth = (60-40)/40 = 20/40 = 50%."},
+    {"id": 16, "company": "TCS", "topic": "Data Interpretation", "level": "Hard", "question": "A table shows students in 3 streams: Sci(120), Com(80), Arts(100). What percentage of total students are in Commerce?", "options": ["25.6%", "26.6%", "30%", "33%"], "answer": "26.6%", "explanation": "80 / (120+80+100) = 80/300 = 26.6%."},
+    {"id": 17, "company": "Capgemini", "topic": "Data Interpretation", "level": "Easy", "question": "If 360 degrees in a pie chart equals $5000, how much does 90 degrees represent?", "options": ["$1000", "$1250", "$1500", "$2000"], "answer": "$1250", "explanation": "(90/360) * 5000 = 1/4 * 5000 = 1250."},
+
+    # --- LOGICAL REASONING ---
+    {"id": 18, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "In a certain code, 'ORANGE' is 'PSBOHF'. What is 'APPLE'?", "options": ["BQQMF", "BPQMF", "BQQNF", "BRQMF"], "answer": "BQQMF", "explanation": "Each letter is shifted +1 (A->B, P->Q, etc.)."},
+    {"id": 19, "company": "IBM", "topic": "Logical", "level": "Hard", "question": "Pointing to a man, a woman says, 'His mother is the only daughter of my mother.' How is the woman related to the man?", "options": ["Sister", "Mother", "Grandmother", "Aunt"], "answer": "Mother", "explanation": "'Only daughter of my mother' is the woman herself. So, she is the man's mother."},
+    {"id": 20, "company": "HCL", "topic": "Logical", "level": "Easy", "question": "Odd one out: 64, 125, 216, 343, 512, 721", "options": ["343", "512", "721", "216"], "answer": "721", "explanation": "All others are perfect cubes (4^3, 5^3, etc.). 721 is not."},
+]
 ]
 
 # --- APP CONFIG ---
