@@ -562,6 +562,7 @@ QUESTIONS = [
     {"id": 20, "company": "HCL", "topic": "Logical", "level": "Easy", "question": "Odd one out: 64, 125, 216, 343, 512, 721", "options": ["343", "512", "721", "216"], "answer": "721", "explanation": "All others are perfect cubes (4^3, 5^3, etc.). 721 is not."},
 ]
 
+
 # --- APP CONFIG ---
 st.set_page_config(page_title="AptiStreak Pro - Enterprise", layout="wide")
 
