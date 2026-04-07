@@ -5,7 +5,7 @@ import os
 import random
 from datetime import datetime, date
 import plotly.express as px
-
+ 
 # --- DATABASE SETUP ---
 DB_FILE = "user_stats_v2.json"
 
