@@ -771,27 +771,42 @@ if 'q_idx' not in st.session_state:
     st.session_state.session_score = 0
     st.session_state.ans_submitted = False
 
-# Filters
+# --- FIXED FILTERS & LOGIC ---
 col_a, col_b, col_c = st.columns(3)
+
+# 1. Extract company names from the new nested list structure
+available_companies = sorted([item["company"] for item in QUESTIONS])
+
 with col_a:
-    target_comp = st.selectbox("🎯 Target Company", ["All"] + list(sorted(set(q["company"] for q in QUESTIONS))))
+    target_comp = st.selectbox("🎯 Target Company", ["All"] + available_companies)
+
+# 2. Create a flat pool based on company selection
+if target_comp == "All":
+    # Flattens all questions from all companies into one list
+    base_pool = [q for item in QUESTIONS for q in item["questions"]]
+else:
+    # Gets the questions list for the specific company
+    base_pool = next(item["questions"] for item in QUESTIONS if item["company"] == target_comp)
+
 with col_b:
-    target_topic = st.selectbox("📚 Topic", ["All"] + list(sorted(set(q["topic"] for q in QUESTIONS))))
+    # Extract topics from the selected base_pool
+    available_topics = sorted(list(set(q["topic"] for q in base_pool)))
+    target_topic = st.selectbox("📚 Topic", ["All"] + available_topics)
+
 with col_c:
     target_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard"])
 
-# Filter Logic
-pool = [q for q in QUESTIONS if 
-        (target_comp == "All" or q["company"] == target_comp) and 
-        (target_topic == "All" or q["topic"] == target_topic) and
-        (q.get("level") == target_level)]
+# 3. Final Filtering Logic
+pool = [q for q in base_pool if 
+        (target_topic == "All" or q["topic"] == target_topic) and 
+        (q.get("level", "Medium") == target_level)]
 
+# Fallback if specific difficulty has no questions
 if not pool:
-    st.warning("No questions match your specific level filter for this company/topic. Showing all levels for your selection instead.")
-    pool = [q for q in QUESTIONS if 
-        (target_comp == "All" or q["company"] == target_comp) and 
-        (target_topic == "All" or q["topic"] == target_topic)]
+    st.warning(f"No {target_level} questions found for this selection. Showing available questions instead.")
+    pool = [q for q in base_pool if (target_topic == "All" or q["topic"] == target_topic)]
 
+# --- QUESTION RENDERING ---
 if not pool:
     st.error("No questions match your elite filters. Try broadening your search.")
 elif st.session_state.q_idx < len(pool):
@@ -799,7 +814,9 @@ elif st.session_state.q_idx < len(pool):
     
     st.markdown(f"### Question {st.session_state.q_idx + 1}")
     with st.container():
-        st.info(f"**Company:** {q['company']} | **Difficulty:** {q['level']} | **Topic:** {q['topic']}")
+        # Added a fallback for company name display since it's now inside the pool
+        comp_display = target_comp if target_comp != "All" else "Mixed"
+        st.info(f"**Selection:** {comp_display} | **Difficulty:** {q.get('level', 'N/A')} | **Topic:** {q['topic']}")
         st.write(f"#### {q['question']}")
         
         user_choice = st.radio("Choose the correct option:", q["options"], key=f"choice_{st.session_state.q_idx}_{q['id']}")
