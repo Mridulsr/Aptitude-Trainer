@@ -774,23 +774,30 @@ if 'q_idx' not in st.session_state:
 # --- FIXED FILTERS & LOGIC ---
 col_a, col_b, col_c = st.columns(3)
 
-# 1. Extract company names from the new nested list structure
-available_companies = sorted([item["company"] for item in QUESTIONS])
+# 1. Safety Check: Only extract 'company' if the key actually exists in the item
+available_companies = sorted(list(set(
+    item["company"] for item in QUESTIONS if isinstance(item, dict) and "company" in item
+)))
 
 with col_a:
     target_comp = st.selectbox("🎯 Target Company", ["All"] + available_companies)
 
 # 2. Create a flat pool based on company selection
 if target_comp == "All":
-    # Flattens all questions from all companies into one list
-    base_pool = [q for item in QUESTIONS for q in item["questions"]]
+    # Only try to flatten if the item has a 'questions' key
+    base_pool = [
+        q for item in QUESTIONS 
+        if isinstance(item, dict) and "questions" in item 
+        for q in item["questions"]
+    ]
 else:
-    # Gets the questions list for the specific company
-    base_pool = next(item["questions"] for item in QUESTIONS if item["company"] == target_comp)
+    # Safely find the specific company
+    selected_data = next((item for item in QUESTIONS if item.get("company") == target_comp), None)
+    base_pool = selected_data["questions"] if selected_data else []
 
 with col_b:
     # Extract topics from the selected base_pool
-    available_topics = sorted(list(set(q["topic"] for q in base_pool)))
+    available_topics = sorted(list(set(q["topic"] for q in base_pool))) if base_pool else []
     target_topic = st.selectbox("📚 Topic", ["All"] + available_topics)
 
 with col_c:
@@ -798,8 +805,8 @@ with col_c:
 
 # 3. Final Filtering Logic
 pool = [q for q in base_pool if 
-        (target_topic == "All" or q["topic"] == target_topic) and 
-        (q.get("level", "Medium") == target_level)]
+        (target_topic == "All" or q.get("topic") == target_topic) and 
+        (q.get("level") == target_level)]
 
 # Fallback if specific difficulty has no questions
 if not pool:
