@@ -645,7 +645,7 @@ QUESTIONS = [
       },
   {
     "company": "Virtusa",
-    "questions": [
+    "questions":
       {
         "id": 1,
         "topic": "Ages",
@@ -725,7 +725,8 @@ QUESTIONS = [
         "options": ["960", "1440", "1080", "1920"],
         "answer": "1440",
         "explanation": "Multiplied by consecutive integers: x2, x3, x4, x5, x6. 240 * 6 = 1440."
-      }
+      },
+  }
 ]
 
 
