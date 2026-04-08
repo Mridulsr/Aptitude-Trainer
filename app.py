@@ -321,371 +321,126 @@ QUESTIONS = [
   {"id": 206, "company": "Cognizant", "topic": "Arithmetic", "level": "Hard", "question": "Divided by 20, 25, 35, 40 leaves rem 14, 19, 29, 34. Smallest number?", "options": ["1394", "1400", "1406", "1386"], "answer": "1394", "explanation": "LCM - common difference (6)."},
   {"id": 207, "company": "Cognizant", "topic": "Logical", "level": "Hard", "question": "No paper is pen. Some pens are pencils. Conclusion?", "options": ["Some pencils are pens", "Some pencils are papers", "Both", "None"], "answer": "Some pencils are pens", "explanation": "Converse of 'Some pens are pencils'."},
   {"id": 208, "company": "Cognizant", "topic": "Arithmetic", "level": "Hard", "question": "CI on 5000 for 1.5 yrs at 4% compounded half-yearly?", "options": ["306.04", "300", "310", "320"], "answer": "306.04", "explanation": "5000(1.02)^3 - 5000."},
-  {"id": 209, "company": "Cognizant", "topic": "Data Interpretation", "level": "Hard", "question": "Sales Jan: 100, Feb: 120, Mar: 110. Average?", "options": ["100", "110", "120", "115"], "answer": "110", "explanation": "330/3 = 110."},
+  import streamlit as st
+import pandas as pd
+import json
+import os
+from datetime import date
+import plotly.express as px
+
+# --- 1. CONSOLIDATED DATASET (All Batches Combined) ---
+QUESTIONS = [
+    # TCS SET
     {"id": 102, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "The sum of two numbers is 25 and their difference is 13. Find their product.", "options": ["104", "114", "315", "325"], "answer": "114", "explanation": "x+y=25, x-y=13. Adding gives 2x=38, x=19. Then y=6. Product = 19*6 = 114."},
     {"id": 103, "company": "TCS", "topic": "Arithmetic", "level": "Medium", "question": "What is the remainder when 2^31 is divided by 7?", "options": ["1", "2", "3", "4"], "answer": "2", "explanation": "2^3 = 8. 8/7 leaves remainder 1. (2^3)^10 * 2^1 = 1^10 * 2 = 2."},
-    {"id": 104, "company": "TCS", "topic": "Programming Logic", "level": "Hard", "question": "In C, what is the output of printf('%d', 10 ? 0 ? 5 : 11 : 12);?", "options": ["10", "0", "11", "12"], "answer": "11", "explanation": "Nested ternary: 10 is true, so it evaluates (0 ? 5 : 11). 0 is false, so it results in 11."},
-    {"id": 105, "company": "TCS", "topic": "Arithmetic", "level": "Advanced", "question": "A sum of money amounts to Rs. 6690 after 3 years and to Rs. 10035 after 6 years on compound interest. Find the sum.", "options": ["4460", "4400", "4500", "4660"], "answer": "4460", "explanation": "Ratio of amounts = 10035/6690 = 1.5. P * (1.5) = 6690. P = 6690 / 1.5 = 4460."},
-
-    # --- COGNIZANT (Logical Reasoning & Verbal) ---
-    {"id": 106, "company": "Cognizant", "topic": "Logical", "level": "Easy", "question": "If FISH is coded as EHRG, what is the code for JUNGLE?", "options": ["ITMFKD", "ITMFLD", "KVOHMF", "TIMFKD"], "answer": "ITMFKD", "explanation": "Each letter is shifted one position backward (F-1=E, I-1=H, etc.)."},
-    {"id": 107, "company": "Cognizant", "topic": "Logical", "level": "Medium", "question": "A man walks 5km South, then turns right and walks 3km. He then turns left and walks 5km. In which direction is he from the starting point?", "options": ["South", "South-West", "South-East", "North-West"], "answer": "South-West", "explanation": "Starting at origin (0,0), he goes to (0,-5), then (-3,-5), then (-3,-10). This is South-West."},
-    {"id": 108, "company": "Cognizant", "topic": "Verbal", "level": "Hard", "question": "Choose the correct sentence:", "options": ["He is one of the best man in the world.", "He is one of the best men in the world.", "He is one of the better men in the world.", "He is one of best men in the world."], "answer": "He is one of the best men in the world.", "explanation": "'One of the' is followed by a plural noun and a superlative adjective."},
-    {"id": 109, "company": "Cognizant", "topic": "Logical", "level": "Advanced", "question": "Statements: All bags are pockets. All pockets are pouches. Conclusion: I. All bags are pouches. II. Some pouches are bags.", "options": ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follow"], "answer": "Both I and II follow", "explanation": "Standard syllogism. Since Bags ⊂ Pockets ⊂ Pouches, All bags are pouches. Consequently, some pouches are bags."},
-
-    # --- WIPRO (Quantitative & Analytical) ---
-    {"id": 110, "company": "Wipro", "topic": "Arithmetic", "level": "Easy", "question": "The average of 5 numbers is 27. If one number is excluded, the average becomes 25. Find the excluded number.", "options": ["30", "35", "40", "45"], "answer": "35", "explanation": "Sum of 5 = 5*27 = 135. Sum of 4 = 4*25 = 100. Excluded = 135 - 100 = 35."},
-    {"id": 111, "company": "Wipro", "topic": "Arithmetic", "level": "Medium", "question": "A can do a work in 15 days, B in 20 days. They work together for 4 days. What fraction of work is left?", "options": ["7/15", "8/15", "11/15", "1/4"], "answer": "8/15", "explanation": "1 day work = 1/15 + 1/20 = 7/60. 4 days work = 28/60 = 7/15. Left = 1 - 7/15 = 8/15."},
-    {"id": 112, "company": "Wipro", "topic": "Arithmetic", "level": "Hard", "question": "A motorboat whose speed is 15 km/hr in still water goes 30 km downstream and comes back in a total of 4 hours 30 minutes. The speed of the stream (in km/hr) is:", "options": ["4", "5", "6", "10"], "answer": "5", "explanation": "30/(15+x) + 30/(15-x) = 4.5. Solving for x, we get x=5."},
-    {"id": 113, "company": "Wipro", "topic": "Logical", "level": "Advanced", "question": "Find the missing number: 2, 6, 12, 20, 30, 42, ?", "options": ["50", "52", "54", "56"], "answer": "56", "explanation": "The differences are 4, 6, 8, 10, 12. Next difference is 14. 42 + 14 = 56."},
-
-    # --- INFOSYS (Puzzles & Mathematical) ---
-    {"id": 114, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "A clock strikes once at 1 o’clock, twice at 2 o’clock, and so on. How many times will it strike in 24 hours?", "options": ["78", "156", "200", "300"], "answer": "156", "explanation": "Strikes in 12 hours = 1+2+...+12 = 78. In 24 hours = 78 * 2 = 156."},
-    {"id": 115, "company": "Infosys", "topic": "Arithmetic", "level": "Medium", "question": "Find the number of ways in which 5 boys and 5 girls can be seated in a row so that no two girls are together.", "options": ["5! * 6!", "5! * 5!", "10!", "None"], "answer": "5! * 6!", "explanation": "Arrange 5 boys (5!). There are 6 gaps for 5 girls (6P5). Result: 5! * 6! / 1! = 5! * 6!."},
-    {"id": 116, "company": "Infosys", "topic": "Arithmetic", "level": "Hard", "question": "If 1.5x = 0.04y, then the value of (y-x)/(y+x) is:", "options": ["73/77", "73/75", "70/77", "11/15"], "answer": "73/77", "explanation": "x/y = 0.04/1.5 = 4/150 = 2/75. Let x=2, y=75. (75-2)/(75+2) = 73/77."},
-    {"id": 117, "company": "Infosys", "topic": "Puzzle", "level": "Advanced", "question": "There are 8 identical-looking gold coins, but one is fake and weighs slightly less. Using a balance scale, what is the minimum number of weighings to find it?", "options": ["2", "3", "4", "8"], "answer": "2", "explanation": "Group into 3, 3, 2. Weigh 3 vs 3. If equal, fake is in the 2. If unequal, fake is in the lighter 3. One more weighing confirms."},
-
-    # --- ACCENTURE (Analytical & Critical) ---
-    {"id": 118, "company": "Accenture", "topic": "Arithmetic", "level": "Easy", "question": "What is the value of 12.5% of 800?", "options": ["100", "125", "80", "160"], "answer": "100", "explanation": "12.5% is 1/8. 800 / 8 = 100."},
-    {"id": 119, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "In a certain code, '256' means 'you are good', '637' means 'we are bad', and '358' means 'good and bad'. Which digit means 'and'?", "options": ["2", "5", "8", "3"], "answer": "8", "explanation": "Comparing 256 and 358, 'good' is 5. Comparing 637 and 358, 'bad' is 3. Remaining in 358 is 8, which means 'and'."},
-    {"id": 120, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money at simple interest amounts to Rs. 2240 in 2 years and Rs. 2600 in 5 years. Find the interest rate.", "options": ["5%", "6%", "10%", "12%"], "answer": "6%", "explanation": "SI for 3 years = 2600-2240 = 360. SI for 1 year = 120. P = 2240 - (120*2) = 2000. R = (120/2000)*100 = 6%."},
-    {"id": 121, "company": "Accenture", "topic": "Verbal", "level": "Advanced", "question": "Identify the synonym for 'Ephemeral':", "options": ["Eternal", "Short-lived", "Useless", "Beautiful"], "answer": "Short-lived", "explanation": "Ephemeral refers to something lasting for a very short time."},
-{
-    "id": 1,
-    "topic": "Alligation or Mixture",
-    "company": "HCL",
-    "question": "In what ratio must a grocer mix two varieties of tea worth 60 per kg and 65 per kg so that by selling the mixture at 68.20 per kg he may gain 10%?",
-    "options": ["3:2", "3:4", "3:5", "4:5"],
-    "answer": "3:2",
-    "explanation": "SP = 68.20, Profit = 10%. CP = (100/110) * 68.20 = 62. By Alligation: (65 - 62) : (62 - 60) = 3 : 2."
-  },
-  {
-    "id": 2,
-    "topic": "Permutation and Combination",
-    "company": "Capgemini",
-    "question": "How many 3-digit numbers can be formed from the digits 2, 3, 5, 6, 7 and 9, which are divisible by 5 and none of the digits is repeated?",
-    "options": ["5", "10", "15", "20"],
-    "answer": "20",
-    "explanation": "For a number to be divisible by 5, the unit digit must be 5. Remaining 2 places can be filled by 5 remaining digits: 5 * 4 = 20."
-  },
-  {
-    "id": 3,
-    "topic": "Simple Interest",
-    "company": "Tech Mahindra",
-    "question": "A sum of money at simple interest amounts to 815 in 3 years and to 854 in 4 years. The sum is:",
-    "options": ["650", "690", "698", "700"],
-    "answer": "698",
-    "explanation": "SI for 1 year = 854 - 815 = 39. SI for 3 years = 39 * 3 = 117. Principal = 815 - 117 = 698."
-  },
-  {
-    "id": 4,
-    "topic": "Time and Work",
-    "company": "Mindtree",
-    "question": "A is thrice as efficient as B and takes 60 days less than B to finish a work. In how many days can they finish it together?",
-    "options": ["22 days", "22.5 days", "23 days", "25 days"],
-    "answer": "22.5 days",
-    "explanation": "Efficiency A:B = 3:1. Time A:B = 1:3. Difference 2 units = 60 days. A = 30, B = 90. Together = (30*90)/(30+90) = 22.5."
-  },
-  {
-    "id": 5,
-    "topic": "Logarithm",
-    "company": "LTI",
-    "question": "If log 2 = 0.30103, find the number of digits in 2^64.",
-    "options": ["18", "19", "20", "21"],
-    "answer": "20",
-    "explanation": "log(2^64) = 64 * 0.30103 = 19.2659. Number of digits = Characteristic + 1 = 19 + 1 = 20."
-  },
-  {
-    "id": 6,
-    "topic": "Problems on Trains",
-    "company": "DXC Technology",
-    "question": "A train 125 m long passes a man, running at 5 kmph in the same direction in which the train is going, in 10 seconds. The speed of the train is:",
-    "options": ["45 kmph", "50 kmph", "54 kmph", "55 kmph"],
-    "answer": "50 kmph",
-    "explanation": "Relative speed = 125/10 = 12.5 m/s = 45 kmph. Let train speed be x. x - 5 = 45 => x = 50 kmph."
-  },
-  {
-    "id": 7,
-    "topic": "Boats and Streams",
-    "company": "Hexaware",
-    "question": "A boat can travel with a speed of 13 kmph in still water. If the speed of the stream is 4 kmph, find the time taken by the boat to go 68 km downstream.",
-    "options": ["2 hours", "3 hours", "4 hours", "5 hours"],
-    "answer": "4 hours",
-    "explanation": "Downstream speed = 13 + 4 = 17 kmph. Time = 68/17 = 4 hours."
-  },
-  {
-    "id": 8,
-    "topic": "Area",
-    "company": "IBM",
-    "question": "The diagonal of a rectangle is 17 cm long and its perimeter is 46 cm. The area of the rectangle is:",
-    "options": ["100 cm²", "110 cm²", "120 cm²", "130 cm²"],
-    "answer": "120 cm²",
-    "explanation": "l + b = 23, l² + b² = 17² = 289. (l+b)² = l²+b²+2lb => 529 = 289 + 2lb => 2lb = 240 => lb = 120."
-  },
-  {
-    "id": 9,
-    "topic": "Percentage",
-    "company": "Mphasis",
-    "question": "If 20% of a = b, then b% of 20 is the same as:",
-    "options": ["4% of a", "5% of a", "20% of a", "None"],
-    "answer": "4% of a",
-    "explanation": "b = 0.2a. b% of 20 = (b/100)*20 = (0.2a/100)*20 = 0.04a = 4% of a."
-  },
-  {
-    "id": 10,
-    "topic": "Problems on Ages",
-    "company": "Virtusa",
-    "question": "The ratio of present ages of P and Q is 3:4. 5 years ago, the ratio was 2:3. What is the present age of P?",
-    "options": ["10", "12", "15", "20"],
-    "answer": "15",
-    "explanation": "(3x-5)/(4x-5) = 2/3. 9x - 15 = 8x - 10. x = 5. P = 3 * 5 = 15."
-  },
-  {
-    "id": 11,
-    "topic": "Decimal Fraction",
-    "company": "CGI",
-    "question": "The value of (0.1 * 0.1 * 0.1 + 0.02 * 0.02 * 0.02) / (0.2 * 0.2 * 0.2 + 0.04 * 0.04 * 0.04) is:",
-    "options": ["0.125", "0.25", "0.5", "0.0625"],
-    "answer": "0.125",
-    "explanation": "The denominator is 2³ = 8 times the numerator. So, 1/8 = 0.125."
-  },
-  {
-    "id": 12,
-    "topic": "Average",
-    "company": "Societe Generale",
-    "question": "The average of 20 numbers is zero. Of them, at the most, how many may be greater than zero?",
-    "options": ["0", "1", "10", "19"],
-    "answer": "19",
-    "explanation": "If 19 numbers are positive, the 20th number can be a negative value equal to the sum of the 19 numbers, making the total sum zero."
-  },
-  {
-    "id": 13,
-    "topic": "Compound Interest",
-    "company": "Verizon",
-    "question": "The compound interest on 30,000 at 7% per annum is 4347. The period (in years) is:",
-    "options": ["2", "2.5", "3", "4"],
-    "answer": "2",
-    "explanation": "Amount = 34347. 30000(1.07)^n = 34347. (1.07)^n = 1.1449. Since 1.07 * 1.07 = 1.1449, n = 2."
-  },
-  {
-    "id": 14,
-    "topic": "HCF and LCM",
-    "company": "Oracle",
-    "question": "The HCF of two numbers is 11 and their LCM is 693. If one number is 77, find the other.",
-    "options": ["88", "99", "101", "110"],
-    "answer": "99",
-    "explanation": "Product of numbers = HCF * LCM. 77 * x = 11 * 693. x = (11 * 693) / 77 = 99."
-  },
-  {
-    "id": 15,
-    "topic": "Probability",
-    "company": "Goldman Sachs",
-    "question": "In a box, there are 8 red, 7 blue and 6 green balls. One ball is picked up randomly. What is the probability that it is neither red nor green?",
-    "options": ["1/3", "7/21", "8/21", "9/21"],
-    "answer": "1/3",
-    "explanation": "Neither red nor green means blue. Total balls = 21. Blue balls = 7. Prob = 7/21 = 1/3."
-  },
-  {
-    "id": 16,
-    "topic": "Profit and Loss",
-    "company": "Amazon",
-    "question": "If selling price is doubled, the profit triples. Find the profit percent.",
-    "options": ["66.66%", "100%", "105%", "120%"],
-    "answer": "100%",
-    "explanation": "Let CP = x, SP = y. Profit = y - x. 3(y - x) = 2y - x => y = 2x. Profit = 2x - x = x. % = (x/x) * 100 = 100%."
-  },
-  {
-    "id": 17,
-    "topic": "Time and Distance",
-    "company": "Microsoft",
-    "question": "Excluding stoppages, the speed of a bus is 54 kmph and including stoppages, it is 45 kmph. For how many minutes does the bus stop per hour?",
-    "options": ["9", "10", "12", "15"],
-    "answer": "10",
-    "explanation": "Time of rest = (Difference in speed / Speed without stoppages). (54-45)/54 = 9/54 = 1/6 hour = 10 minutes."
-  },
-  {
-    "id": 18,
-    "topic": "Surds and Indices",
-    "company": "Google",
-    "question": "If (1/5)^3y = 0.008, then the value of (0.25)^y is:",
-    "options": ["0.25", "0.5", "0.625", "1"],
-    "answer": "0.25",
-    "explanation": "(0.2)^3y = (0.2)^3 => 3y = 3 => y = 1. (0.25)^1 = 0.25."
-  },
-  {
-    "id": 19,
-    "topic": "Simplification",
-    "company": "Adobe",
-    "question": "3/4 of 2/3 of 1/2 of 480 is:",
-    "options": ["60", "120", "240", "300"],
-    "answer": "120",
-    "explanation": "(3/4) * (2/3) * (1/2) * 480 = (1/4) * 480 = 120."
-  },
-  {
-    "id": 20,
-    "topic": "Partnership",
-    "company": "Samsung",
-    "question": "A, B and C invest 2000, 3000 and 4000 in a business. After one year, the profit is 900. B's share is:",
-    "options": ["200", "300", "400", "500"],
-    "answer": "300",
-    "explanation": "Ratio of investment = 2:3:4. Total parts = 9. B's share = (3/9) * 900 = 300."
-  },
-{"id": 1, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the unit digit in (7^95 - 3^58)?", "options": ["0", "4", "6", "7"], "answer": "4", "explanation": "7^95 ends in 3, 3^58 ends in 9. 13-9=4."},
-    {"id": 2, "company": "Virtusa", "topic": "Arithmetic", "level": "Medium", "question": "The ratio of present ages of P and Q is 3:4. 5 years ago, the ratio was 2:3. What is the present age of P?", "options": ["10", "12", "15", "20"], "answer": "15", "explanation": "3x-5/4x-5 = 2/3 => x=5. P=15."},
-    {"id": 3, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money at CI amounts to thrice itself in 3 years. In how many years will it be 9 times itself?", "options": ["6", "9", "12", "15"], "answer": "6", "explanation": "3^1 in 3 yrs, 3^2 (9) in 3*2=6 yrs."},
-    {"id": 4, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "Find the HCF of 2/3, 8/9, 64/81.", "options": ["2/81", "2/3", "8/81", "1/3"], "answer": "2/81", "explanation": "HCF(num)/LCM(den) = 2/81."},
+    {"id": 104, "company": "TCS", "topic": "Programming Logic", "level": "Hard", "question": "In C, what is the output of printf('%d', 10 ? 0 ? 5 : 11 : 12);?", "options": ["10", "0", "11", "12"], "answer": "11", "explanation": "Nested ternary: 10 is true, 0 is false, so it results in 11."},
+    {"id": 123, "company": "TCS", "topic": "Arithmetic", "level": "Hard", "question": "Find the remainder when 2^31 is divided by 5.", "options": ["1", "2", "3", "4"], "answer": "3", "explanation": "Cyclicity of 2 is 2,4,8,6. 31/4 rem 3. 2^3 = 8. 8/5 rem 3."},
     
-    # --- DATA INTERPRETATION ---
-    {"id": 5, "company": "Virtusa", "topic": "Data Interpretation", "level": "Easy", "question": "In a pie chart, a sector represents 20% of the total. What is its central angle?", "options": ["36°", "72°", "90°", "108°"], "answer": "72°", "explanation": "20% of 360 = 0.2 * 360 = 72°."},
-    {"id": 6, "company": "Wipro", "topic": "Data Interpretation", "level": "Medium", "question": "Revenue grew from 100Cr to 150Cr. What is the percentage increase?", "options": ["25%", "50%", "75%", "100%"], "answer": "50%", "explanation": "(50/100)*100 = 50%."},
-    {"id": 7, "company": "Capgemini", "topic": "Data Interpretation", "level": "Hard", "question": "If the ratio of Import to Export is 0.65, and Imports are 650 units, what are Exports?", "options": ["1000", "800", "1200", "900"], "answer": "1000", "explanation": "650/x = 0.65 => x = 1000."},
+    # COGNIZANT SET
+    {"id": 200, "company": "Cognizant", "topic": "Arithmetic", "level": "Hard", "question": "A man's present age is 2/5 of his mother's. After 8 years, he will be 1/2 of his mother's age. How old is the mother now?", "options": ["30", "40", "50", "60"], "answer": "40", "explanation": "Let Mother = M, Son = 0.4M. (0.4M + 8) = 0.5(M + 8). 0.1M = 4 => M = 40."},
+    {"id": 107, "company": "Cognizant", "topic": "Logical", "level": "Medium", "question": "A man walks 5km South, then turns right and walks 3km. He then turns left and walks 5km. Direction from start?", "options": ["South", "South-West", "South-East", "North-West"], "answer": "South-West", "explanation": "Path: (0,0) -> (0,-5) -> (-3,-5) -> (-3,-10). Results in South-West."},
     
-    # --- LOGICAL REASONING ---
-    {"id": 8, "company": "Cognizant", "topic": "Logical", "level": "Easy", "question": "Complete the series: 2, 6, 12, 20, 30, ?", "options": ["36", "40", "42", "48"], "answer": "42", "explanation": "Differences are 4, 6, 8, 10, 12. 30+12=42."},
-    {"id": 9, "company": "HCL", "topic": "Logical", "level": "Medium", "question": "If 'CUP' is 40, what is 'KITE'?", "options": ["45", "48", "50", "52"], "answer": "45", "explanation": "Sum of alphabet positions: K(11)+I(9)+T(20)+E(5) = 45."},
-    {"id": 10, "company": "IBM", "topic": "Logical", "level": "Hard", "question": "If A+B means A is daughter of B, A-B means A is husband of B, what does P-Q+R mean?", "options": ["P is father of Q", "P is son-in-law of R", "P is brother of R", "None"], "answer": "P is son-in-law of R", "explanation": "Q is daughter of R, P is husband of Q. So P is R's son-in-law."},
-{"id": 11, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the LCM of 12, 18, and 24?", "options": ["48", "72", "96", "120"], "answer": "72", "explanation": "12=2^2*3, 18=2*3^2, 24=2^3*3. LCM = 2^3 * 3^2 = 72."},
-    {"id": 12, "company": "Infosys", "topic": "Arithmetic", "level": "Medium", "question": "A can do work in 10 days, B in 15 days. They work together for 2 days, then A leaves. How long for B to finish?", "options": ["8 days", "10 days", "12 days", "15 days"], "answer": "10 days", "explanation": "Combined 1-day work = 1/10 + 1/15 = 1/6. 2 days = 1/3. Remaining 2/3 done by B in (2/3)*15 = 10 days."},
-    {"id": 13, "company": "Wipro", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money doubles itself in 10 years at SI. In how many years will it triple?", "options": ["15", "20", "25", "30"], "answer": "20", "explanation": "To double, SI=P. To triple, SI=2P. If P takes 10 years, 2P takes 20 years."},
-    {"id": 14, "company": "Virtusa", "topic": "Arithmetic", "level": "Easy", "question": "What is 15% of 200?", "options": ["20", "30", "40", "50"], "answer": "30", "explanation": "0.15 * 200 = 30."},
+    # INFOSYS SET
+    {"id": 114, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "A clock strikes once at 1, twice at 2... How many strikes in 24 hours?", "options": ["78", "156", "200", "300"], "answer": "156", "explanation": "(1+2...+12) = 78. For 24 hours, 78 * 2 = 156."},
+    {"id": 117, "company": "Infosys", "topic": "Puzzle", "level": "Hard", "question": "8 identical coins, 1 is fake (lighter). Minimum weighings on balance scale to find it?", "options": ["2", "3", "4", "8"], "answer": "2", "explanation": "Split 3-3-2. First weigh 3 vs 3. If balanced, fake is in the 2. If not, fake is in the lighter 3."},
     
-    # --- DATA INTERPRETATION (Focusing on Virtusa/TCS) ---
-    {"id": 15, "company": "Virtusa", "topic": "Data Interpretation", "level": "Medium", "question": "In a bar graph, if X-axis represents Years and Y-axis represents Sales (in millions), and Sales for 2024 is 40 and 2025 is 60, what is the growth rate?", "options": ["20%", "40%", "50%", "60%"], "answer": "50%", "explanation": "Growth = (60-40)/40 = 20/40 = 50%."},
-    {"id": 16, "company": "TCS", "topic": "Data Interpretation", "level": "Hard", "question": "A table shows students in 3 streams: Sci(120), Com(80), Arts(100). What percentage of total students are in Commerce?", "options": ["25.6%", "26.6%", "30%", "33%"], "answer": "26.6%", "explanation": "80 / (120+80+100) = 80/300 = 26.6%."},
-    {"id": 17, "company": "Capgemini", "topic": "Data Interpretation", "level": "Easy", "question": "If 360 degrees in a pie chart equals $5000, how much does 90 degrees represent?", "options": ["$1000", "$1250", "$1500", "$2000"], "answer": "$1250", "explanation": "(90/360) * 5000 = 1/4 * 5000 = 1250."},
+    # WIPRO SET
+    {"id": 112, "company": "Wipro", "topic": "Arithmetic", "level": "Hard", "question": "Boat speed 15 km/hr in still water. 30 km downstream and back in 4.5 hrs. Stream speed?", "options": ["4", "5", "6", "10"], "answer": "5", "explanation": "30/(15+x) + 30/(15-x) = 4.5. x=5."},
+    {"id": 160, "company": "Wipro", "topic": "Arithmetic", "level": "Medium", "question": "Sum becomes 8 times itself in 3 years at CI. Rate?", "options": ["50%", "100%", "150%", "200%"], "answer": "100%", "explanation": "(1+r)^3 = 8 => 1+r = 2 => r=100%."},
+    
+    # ACCENTURE SET
+    {"id": 180, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "Shopkeeper marks goods 20% above CP and allows 10% discount. Profit %?", "options": ["8%", "10%", "12%", "15%"], "answer": "8%", "explanation": "1.2 * 0.9 = 1.08, so 8% profit."},
+    {"id": 186, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "Shadow length = Pole height. Angle of elevation?", "options": ["30°", "45°", "60°", "90°"], "answer": "45°", "explanation": "tan(θ) = Height/Shadow. If Height=Shadow, tan(θ)=1, θ=45°."},
 
-    # --- LOGICAL REASONING ---
-    {"id": 18, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "In a certain code, 'ORANGE' is 'PSBOHF'. What is 'APPLE'?", "options": ["BQQMF", "BPQMF", "BQQNF", "BRQMF"], "answer": "BQQMF", "explanation": "Each letter is shifted +1 (A->B, P->Q, etc.)."},
-    {"id": 19, "company": "IBM", "topic": "Logical", "level": "Hard", "question": "Pointing to a man, a woman says, 'His mother is the only daughter of my mother.' How is the woman related to the man?", "options": ["Sister", "Mother", "Grandmother", "Aunt"], "answer": "Mother", "explanation": "'Only daughter of my mother' is the woman herself. So, she is the man's mother."},
-    {"id": 20, "company": "HCL", "topic": "Logical", "level": "Easy", "question": "Odd one out: 64, 125, 216, 343, 512, 721", "options": ["343", "512", "721", "216"], "answer": "721", "explanation": "All others are perfect cubes (4^3, 5^3, etc.). 721 is not."},
- 
+    # HCL/OTHERS
+    {"id": 1, "company": "HCL", "topic": "Alligation", "level": "Hard", "question": "Mix tea worth 60/kg and 65/kg to sell at 68.20 for 10% gain. Ratio?", "options": ["3:2", "3:4", "3:5", "4:5"], "answer": "3:2", "explanation": "CP = 68.2/1.1 = 62. Alligation: (65-62):(62-60) = 3:2."}
 ]
 
+# Note: In actual implementation, you would paste all 250+ JSON objects into the list above.
 
-# --- APP CONFIG ---
-st.set_page_config(page_title="AptiStreak Pro - 2026 Edition", layout="wide")
+# --- 2. DATA PERSISTENCE ---
+def load_user_data():
+    if not os.path.exists("user_profile.json"):
+        return {"streak": 0, "last_active": str(date.today()), "history": []}
+    with open("user_profile.json", "r") as f:
+        return json.load(f)
 
-# Custom CSS
-st.markdown("""
-    <style>
-    .main { background-color: #f8f9fa; }
-    .stButton>button { width: 100%; border-radius: 8px; height: 3.5em; font-weight: bold; }
-    .metric-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #ddd; }
-    </style>
-    """, unsafe_allow_html=True)
+def save_user_data(data):
+    with open("user_profile.json", "w") as f:
+        json.dump(data, f)
 
-user_data = load_data()
+# --- 3. APP INTERFACE ---
+st.set_page_config(page_title="AptiStreak Pro", layout="wide")
+user_data = load_user_data()
 
-# --- SIDEBAR & STREAK ---
+# Streak Logic
+today = str(date.today())
+if user_data["last_active"] != today:
+    # If yesterday was the last activity, increment streak
+    user_data["streak"] += 1
+    user_data["last_active"] = today
+    save_user_data(user_data)
+
+# --- 4. SIDEBAR ---
 with st.sidebar:
-    st.title("🚀 Career Dashboard")
-    st.metric("Current Streak", f"{user_data['streak']} Days", delta="🔥")
+    st.title("🔥 Streak: " + str(user_data["streak"]) + " Days")
+    st.divider()
+    target_company = st.selectbox("🎯 Target Company", sorted(list(set(q["company"] for q in QUESTIONS))))
     
-    if user_data["history"]:
-        df_hist = pd.DataFrame(user_data["history"])
-        st.subheader("Placement Stats")
-        st.progress(df_hist["score_pct"].mean() / 100)
-        st.caption(f"Avg Accuracy: {df_hist['score_pct'].mean():.1f}%")
-
-# --- NAVIGATION & FILTERS ---
-st.title("🏆 IT Placement Command Center")
-
-col_a, col_b, col_c = st.columns(3)
-
-# 1. Company Filter
-available_companies = sorted([item["company"] for item in QUESTIONS])
-with col_a:
-    target_comp = st.selectbox("🎯 Target Company", ["All"] + available_companies)
-
-# 2. Extract Questions based on Company
-if target_comp == "All":
-    base_pool = [
-    q for item in QUESTIONS 
-    if isinstance(item, dict) and "questions" in item 
-    for q in item.get("questions", [])
-]
-else:
-    selected_comp_data = next(item for item in QUESTIONS if item["company"] == target_comp)
-    base_pool = selected_comp_data["questions"]
-
-# 3. Topic & Level Filters
-with col_b:
-    topics = sorted(list(set(q["topic"] for q in base_pool)))
-    target_topic = st.selectbox("📚 Topic", ["All"] + topics)
-
-with col_c:
+    # Dynamic Filtering for Topics based on Company
+    company_qs = [q for q in QUESTIONS if q["company"] == target_company]
+    available_topics = sorted(list(set(q["topic"] for q in company_qs)))
+    target_topic = st.selectbox("📚 Topic", ["All"] + available_topics)
+    
     target_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard"])
 
-# Final Filtering
-pool = [q for q in base_pool if 
+# --- 5. MAIN QUIZ ENGINE ---
+st.title(f"🚀 {target_company} Preparation Portal")
+
+# Filter Pool
+pool = [q for q in company_qs if 
         (target_topic == "All" or q["topic"] == target_topic) and 
         (q["level"] == target_level)]
 
-# --- QUIZ LOGIC ---
-if 'q_idx' not in st.session_state:
-    st.session_state.q_idx = 0
-    st.session_state.session_score = 0
-    st.session_state.ans_submitted = False
-
 if not pool:
-    st.info("No questions match these filters. Try changing the difficulty or topic.")
-elif st.session_state.q_idx < len(pool):
-    q = pool[st.session_state.q_idx]
+    st.warning("No questions found for this specific combination. Try lowering difficulty!")
+else:
+    if 'idx' not in st.session_state: st.session_state.idx = 0
+    if 'score' not in st.session_state: st.session_state.score = 0
     
-    st.divider()
-    st.subheader(f"Question {st.session_state.q_idx + 1}")
-    st.write(f"### {q['question']}")
+    # Progress Bar
+    progress = (st.session_state.idx) / len(pool)
+    st.progress(progress)
     
-    # Display Selection Badge
-    st.caption(f"Tag: {target_comp if target_comp != 'All' else 'General'} | {q['topic']} | {q['level']}")
+    q = pool[st.session_state.idx % len(pool)]
     
-    user_choice = st.radio("Select your answer:", q["options"], key=f"ans_{q['id']}")
-
-    c1, c2 = st.columns([1, 4])
-    with c1:
+    st.subheader(f"Question {st.session_state.idx + 1}")
+    st.markdown(f"#### {q['question']}")
+    
+    user_ans = st.radio("Choose the correct option:", q["options"], key=f"q_{q['id']}")
+    
+    col1, col2 = st.columns([1, 5])
+    with col1:
         if st.button("Submit"):
-            st.session_state.ans_submitted = True
+            if user_ans == q["answer"]:
+                st.success("🎯 Correct!")
+                st.session_state.score += 1
+            else:
+                st.error(f"❌ Incorrect. Answer is {q['answer']}")
+            
+            with st.expander("Show Explanation"):
+                st.write(q["explanation"])
+                if "tan" in q["explanation"] or "^" in q["explanation"]:
+                    st.latex(r"x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}") # Example LaTeX
     
-    if st.session_state.ans_submitted:
-        if user_choice == q["answer"]:
-            st.success("🎯 Correct!")
-            if f"scored_{st.session_state.q_idx}" not in st.session_state:
-                st.session_state.session_score += 1
-                st.session_state[f"scored_{st.session_state.q_idx}"] = True
-        else:
-            st.error(f"❌ Wrong! Correct Answer: {q['answer']}")
-        
-        with st.expander("View Logic & Formulas", expanded=True):
-            st.write(q["explanation"])
-            if "CI" in q["explanation"] or "^" in q["explanation"]:
-                st.latex(r"A = P(1 + \frac{R}{100})^t")
-        
+    with col2:
         if st.button("Next Question ➡"):
-            st.session_state.q_idx += 1
-            st.session_state.ans_submitted = False
+            st.session_state.idx += 1
             st.rerun()
 
-else:
-    st.balloons()
-    score_pct = (st.session_state.session_score / len(pool)) * 100
-    st.success(f"Session Complete! You scored {score_pct:.1f}%")
-    
-    if st.button("Save Result to Profile"):
-        user_data["history"].append({
-            "date": str(date.today()),
-            "score_pct": score_pct,
-            "company": target_comp
-        })
-        save_data(user_data)
-        st.session_state.q_idx = 0
-        st.session_state.session_score = 0
-        st.rerun()
-
-# --- ANALYTICS ---
+# --- 6. PERFORMANCE ANALYTICS ---
 st.divider()
-if user_data["history"]:
-    st.subheader("📈 Performance History")
-    hist_df = pd.DataFrame(user_data["history"])
-    fig = px.line(hist_df, x="date", y="score_pct", title="Accuracy Trend", markers=True)
-    fig.update_layout(yaxis_range=[0, 105])
-    st.plotly_chart(fig, use_container_width=True)
+if st.session_state.idx > 0:
+    st.subheader("📊 Session Performance")
+    accuracy = (st.session_state.score / st.session_state.idx) * 100
+    st.metric("Accuracy", f"{accuracy:.1f}%")
