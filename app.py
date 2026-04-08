@@ -643,7 +643,6 @@ QUESTIONS = [
         "answer": "48",
         "explanation": "Numbers are 12 and 16. LCM(12, 16) = 48."
       }
-    ]
   },
   {
     "company": "Virtusa",
