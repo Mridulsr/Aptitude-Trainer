@@ -565,150 +565,125 @@ QUESTIONS = [
 
 
 # --- APP CONFIG ---
-st.set_page_config(page_title="AptiStreak Pro - Enterprise", layout="wide")
+st.set_page_config(page_title="AptiStreak Pro - 2026 Edition", layout="wide")
 
-# Custom CSS for "Premium" look
+# Custom CSS
 st.markdown("""
     <style>
-    .main { background-color: #f0f2f6; }
-    .stButton>button { width: 100%; border-radius: 5px; height: 3em; background-color: #2e7d32; color: white; }
-    .metric-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+    .main { background-color: #f8f9fa; }
+    .stButton>button { width: 100%; border-radius: 8px; height: 3.5em; font-weight: bold; }
+    .metric-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #ddd; }
     </style>
     """, unsafe_allow_html=True)
 
 user_data = load_data()
 
-# --- SIDEBAR & ANALYTICS ---
+# --- SIDEBAR & STREAK ---
 with st.sidebar:
     st.title("🚀 Career Dashboard")
-    st.metric("Daily Streak", f"{user_data['streak']} Days", "🔥")
+    st.metric("Current Streak", f"{user_data['streak']} Days", delta="🔥")
     
     if user_data["history"]:
-        st.subheader("Placement Readiness")
         df_hist = pd.DataFrame(user_data["history"])
-        avg_score = df_hist["score_pct"].mean()
-        st.progress(avg_score/100)
-        st.caption(f"Average Accuracy: {avg_score:.1f}%")
+        st.subheader("Placement Stats")
+        st.progress(df_hist["score_pct"].mean() / 100)
+        st.caption(f"Avg Accuracy: {df_hist['score_pct'].mean():.1f}%")
 
-# --- MAIN INTERFACE ---
+# --- NAVIGATION & FILTERS ---
 st.title("🏆 IT Placement Command Center")
-st.write("Targeting 2024-2026 Recruitment Cycles")
 
-# Session Management
+col_a, col_b, col_c = st.columns(3)
+
+# 1. Company Filter
+available_companies = sorted([item["company"] for item in QUESTIONS])
+with col_a:
+    target_comp = st.selectbox("🎯 Target Company", ["All"] + available_companies)
+
+# 2. Extract Questions based on Company
+if target_comp == "All":
+    base_pool = [q for item in QUESTIONS for q in item["questions"]]
+else:
+    selected_comp_data = next(item for item in QUESTIONS if item["company"] == target_comp)
+    base_pool = selected_comp_data["questions"]
+
+# 3. Topic & Level Filters
+with col_b:
+    topics = sorted(list(set(q["topic"] for q in base_pool)))
+    target_topic = st.selectbox("📚 Topic", ["All"] + topics)
+
+with col_c:
+    target_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard"])
+
+# Final Filtering
+pool = [q for q in base_pool if 
+        (target_topic == "All" or q["topic"] == target_topic) and 
+        (q["level"] == target_level)]
+
+# --- QUIZ LOGIC ---
 if 'q_idx' not in st.session_state:
     st.session_state.q_idx = 0
     st.session_state.session_score = 0
     st.session_state.ans_submitted = False
 
-# --- FIXED FILTERS & LOGIC ---
-col_a, col_b, col_c = st.columns(3)
-
-# 1. Safety Check for Company Extraction
-available_companies = sorted(list(set(
-    item["company"] for item in QUESTIONS if isinstance(item, dict) and "company" in item
-)))
-
-with col_a:
-    target_comp = st.selectbox("🎯 Target Company", ["All"] + available_companies)
-
-# 2. Create a flat pool (Safe from KeyErrors)
-if target_comp == "All":
-    base_pool = [
-        q for item in QUESTIONS 
-        if isinstance(item, dict) and "questions" in item 
-        for q in item.get("questions", [])
-    ]
-else:
-    selected_data = next((item for item in QUESTIONS if item.get("company") == target_comp), None)
-    # FIX: Using .get() to prevent KeyError if "questions" is missing
-    base_pool = selected_data.get("questions", []) if selected_data else []
-
-with col_b:
-    available_topics = sorted(list(set(q.get("topic", "General") for q in base_pool))) if base_pool else []
-    target_topic = st.selectbox("📚 Topic", ["All"] + available_topics)
-
-with col_c:
-    target_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard"])
-
-# 3. Final Filtering Logic
-pool = [q for q in base_pool if 
-        (target_topic == "All" or q.get("topic") == target_topic) and 
-        (q.get("level") == target_level)]
-
-# Fallback Logic
-if not pool and base_pool:
-    st.warning(f"No {target_level} questions found for this selection. Showing available questions instead.")
-    pool = [q for q in base_pool if (target_topic == "All" or q.get("topic") == target_topic)]
-
-# --- QUESTION RENDERING ---
 if not pool:
-    st.error("No questions match your elite filters. Try broadening your search.")
+    st.info("No questions match these filters. Try changing the difficulty or topic.")
 elif st.session_state.q_idx < len(pool):
     q = pool[st.session_state.q_idx]
     
-    st.markdown(f"### Question {st.session_state.q_idx + 1}")
-    with st.container():
-        comp_display = target_comp if target_comp != "All" else "Mixed"
-        st.info(f"**Selection:** {comp_display} | **Difficulty:** {q.get('level', 'N/A')} | **Topic:** {q.get('topic', 'General')}")
-        st.write(f"#### {q.get('question', 'Question text missing')}")
-        
-        # Safe options access
-        options = q.get("options", ["A", "B", "C", "D"])
-        user_choice = st.radio("Choose the correct option:", options, key=f"choice_{st.session_state.q_idx}_{q.get('id', 0)}")
+    st.divider()
+    st.subheader(f"Question {st.session_state.q_idx + 1}")
+    st.write(f"### {q['question']}")
+    
+    # Display Selection Badge
+    st.caption(f"Tag: {target_comp if target_comp != 'All' else 'General'} | {q['topic']} | {q['level']}")
+    
+    user_choice = st.radio("Select your answer:", q["options"], key=f"ans_{q['id']}")
 
-        if st.button("Validate Answer") or st.session_state.ans_submitted:
+    c1, c2 = st.columns([1, 4])
+    with c1:
+        if st.button("Submit"):
             st.session_state.ans_submitted = True
-            if user_choice == q.get("answer"):
-                st.success("🎯 Correct! You're on track for selection.")
-                if f"counted_{st.session_state.q_idx}" not in st.session_state:
-                    st.session_state.session_score += 1
-                    st.session_state[f"counted_{st.session_state.q_idx}"] = True
-            else:
-                st.error(f"❌ Incorrect. The correct answer was: {q.get('answer')}")
-            
-            with st.expander("Master the Logic (Explanation)", expanded=True):
-                st.write(q.get("explanation", "No explanation provided."))
-                if "ratio" in q.get("explanation", "").lower():
-                    st.latex(r"Ratio = \frac{|Value_2 - Mean|}{|Mean - Value_1|}")
+    
+    if st.session_state.ans_submitted:
+        if user_choice == q["answer"]:
+            st.success("🎯 Correct!")
+            if f"scored_{st.session_state.q_idx}" not in st.session_state:
+                st.session_state.session_score += 1
+                st.session_state[f"scored_{st.session_state.q_idx}"] = True
+        else:
+            st.error(f"❌ Wrong! Correct Answer: {q['answer']}")
+        
+        with st.expander("View Logic & Formulas", expanded=True):
+            st.write(q["explanation"])
+            if "CI" in q["explanation"] or "^" in q["explanation"]:
+                st.latex(r"A = P(1 + \frac{R}{100})^t")
+        
+        if st.button("Next Question ➡"):
+            st.session_state.q_idx += 1
+            st.session_state.ans_submitted = False
+            st.rerun()
 
-            if st.button("Next Challenge ➡"):
-                st.session_state.q_idx += 1
-                st.session_state.ans_submitted = False
-                st.rerun()
 else:
     st.balloons()
     score_pct = (st.session_state.session_score / len(pool)) * 100
-    st.success(f"Session Complete! Accuracy: {score_pct:.1f}%")
+    st.success(f"Session Complete! You scored {score_pct:.1f}%")
     
-    if st.button("Save to Career Profile"):
+    if st.button("Save Result to Profile"):
         user_data["history"].append({
             "date": str(date.today()),
             "score_pct": score_pct,
             "company": target_comp
         })
         save_data(user_data)
-        # Reset session
         st.session_state.q_idx = 0
         st.session_state.session_score = 0
-        st.session_state.ans_submitted = False
         st.rerun()
 
-# --- ANALYTICS TAB ---
+# --- ANALYTICS ---
 st.divider()
-st.subheader("📈 Detailed Performance Analysis")
 if user_data["history"]:
-    plot_df = pd.DataFrame(user_data["history"])
-    # Ensure plotly.express is imported as px at the top of your file
-    import plotly.express as px
-    fig = px.bar(
-        plot_df, 
-        x="date", 
-        y="score_pct", 
-        color="company", 
-        barmode="group", 
-        title="Performance by Company",
-        labels={"score_pct": "Accuracy (%)", "date": "Date"}
-    )
+    st.subheader("📈 Performance History")
+    hist_df = pd.DataFrame(user_data["history"])
+    fig = px.line(hist_df, x="date", y="score_pct", title="Accuracy Trend", markers=True)
+    fig.update_layout(yaxis_range=[0, 105])
     st.plotly_chart(fig, use_container_width=True)
-else:
-    st.write("Complete your first session to see your placement analytics.")
