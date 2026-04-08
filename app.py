@@ -774,7 +774,7 @@ if 'q_idx' not in st.session_state:
 # --- FIXED FILTERS & LOGIC ---
 col_a, col_b, col_c = st.columns(3)
 
-# 1. Safety Check: Only extract 'company' if the key actually exists in the item
+# 1. Safety Check for Company Extraction
 available_companies = sorted(list(set(
     item["company"] for item in QUESTIONS if isinstance(item, dict) and "company" in item
 )))
@@ -782,22 +782,20 @@ available_companies = sorted(list(set(
 with col_a:
     target_comp = st.selectbox("🎯 Target Company", ["All"] + available_companies)
 
-# 2. Create a flat pool based on company selection
+# 2. Create a flat pool (Safe from KeyErrors)
 if target_comp == "All":
-    # Only try to flatten if the item has a 'questions' key
     base_pool = [
         q for item in QUESTIONS 
         if isinstance(item, dict) and "questions" in item 
-        for q in item["questions"]
+        for q in item.get("questions", [])
     ]
 else:
-    # Safely find the specific company
     selected_data = next((item for item in QUESTIONS if item.get("company") == target_comp), None)
-    base_pool = selected_data["questions"] if selected_data else []
+    # FIX: Using .get() to prevent KeyError if "questions" is missing
+    base_pool = selected_data.get("questions", []) if selected_data else []
 
 with col_b:
-    # Extract topics from the selected base_pool
-    available_topics = sorted(list(set(q["topic"] for q in base_pool))) if base_pool else []
+    available_topics = sorted(list(set(q.get("topic", "General") for q in base_pool))) if base_pool else []
     target_topic = st.selectbox("📚 Topic", ["All"] + available_topics)
 
 with col_c:
@@ -808,10 +806,10 @@ pool = [q for q in base_pool if
         (target_topic == "All" or q.get("topic") == target_topic) and 
         (q.get("level") == target_level)]
 
-# Fallback if specific difficulty has no questions
-if not pool:
+# Fallback Logic
+if not pool and base_pool:
     st.warning(f"No {target_level} questions found for this selection. Showing available questions instead.")
-    pool = [q for q in base_pool if (target_topic == "All" or q["topic"] == target_topic)]
+    pool = [q for q in base_pool if (target_topic == "All" or q.get("topic") == target_topic)]
 
 # --- QUESTION RENDERING ---
 if not pool:
@@ -821,26 +819,27 @@ elif st.session_state.q_idx < len(pool):
     
     st.markdown(f"### Question {st.session_state.q_idx + 1}")
     with st.container():
-        # Added a fallback for company name display since it's now inside the pool
         comp_display = target_comp if target_comp != "All" else "Mixed"
-        st.info(f"**Selection:** {comp_display} | **Difficulty:** {q.get('level', 'N/A')} | **Topic:** {q['topic']}")
-        st.write(f"#### {q['question']}")
+        st.info(f"**Selection:** {comp_display} | **Difficulty:** {q.get('level', 'N/A')} | **Topic:** {q.get('topic', 'General')}")
+        st.write(f"#### {q.get('question', 'Question text missing')}")
         
-        user_choice = st.radio("Choose the correct option:", q["options"], key=f"choice_{st.session_state.q_idx}_{q['id']}")
+        # Safe options access
+        options = q.get("options", ["A", "B", "C", "D"])
+        user_choice = st.radio("Choose the correct option:", options, key=f"choice_{st.session_state.q_idx}_{q.get('id', 0)}")
 
         if st.button("Validate Answer") or st.session_state.ans_submitted:
             st.session_state.ans_submitted = True
-            if user_choice == q["answer"]:
+            if user_choice == q.get("answer"):
                 st.success("🎯 Correct! You're on track for selection.")
                 if f"counted_{st.session_state.q_idx}" not in st.session_state:
                     st.session_state.session_score += 1
                     st.session_state[f"counted_{st.session_state.q_idx}"] = True
             else:
-                st.error(f"❌ Incorrect. The correct answer was: {q['answer']}")
+                st.error(f"❌ Incorrect. The correct answer was: {q.get('answer')}")
             
             with st.expander("Master the Logic (Explanation)", expanded=True):
-                st.write(q["explanation"])
-                if "ratio" in q["explanation"].lower():
+                st.write(q.get("explanation", "No explanation provided."))
+                if "ratio" in q.get("explanation", "").lower():
                     st.latex(r"Ratio = \frac{|Value_2 - Mean|}{|Mean - Value_1|}")
 
             if st.button("Next Challenge ➡"):
@@ -859,6 +858,7 @@ else:
             "company": target_comp
         })
         save_data(user_data)
+        # Reset session
         st.session_state.q_idx = 0
         st.session_state.session_score = 0
         st.session_state.ans_submitted = False
@@ -869,7 +869,17 @@ st.divider()
 st.subheader("📈 Detailed Performance Analysis")
 if user_data["history"]:
     plot_df = pd.DataFrame(user_data["history"])
-    fig = px.bar(plot_df, x="date", y="score_pct", color="company", barmode="group", title="Performance by Company")
+    # Ensure plotly.express is imported as px at the top of your file
+    import plotly.express as px
+    fig = px.bar(
+        plot_df, 
+        x="date", 
+        y="score_pct", 
+        color="company", 
+        barmode="group", 
+        title="Performance by Company",
+        labels={"score_pct": "Accuracy (%)", "date": "Date"}
+    )
     st.plotly_chart(fig, use_container_width=True)
 else:
     st.write("Complete your first session to see your placement analytics.")
