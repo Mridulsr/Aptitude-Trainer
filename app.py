@@ -727,6 +727,7 @@ QUESTIONS = [
         "answer": "1440",
         "explanation": "Multiplied by consecutive integers: x2, x3, x4, x5, x6. 240 * 6 = 1440."
       },
+     }
 ]
 
 
