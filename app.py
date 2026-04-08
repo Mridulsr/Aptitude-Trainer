@@ -560,7 +560,8 @@ QUESTIONS = [
     {"id": 18, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "In a certain code, 'ORANGE' is 'PSBOHF'. What is 'APPLE'?", "options": ["BQQMF", "BPQMF", "BQQNF", "BRQMF"], "answer": "BQQMF", "explanation": "Each letter is shifted +1 (A->B, P->Q, etc.)."},
     {"id": 19, "company": "IBM", "topic": "Logical", "level": "Hard", "question": "Pointing to a man, a woman says, 'His mother is the only daughter of my mother.' How is the woman related to the man?", "options": ["Sister", "Mother", "Grandmother", "Aunt"], "answer": "Mother", "explanation": "'Only daughter of my mother' is the woman herself. So, she is the man's mother."},
     {"id": 20, "company": "HCL", "topic": "Logical", "level": "Easy", "question": "Odd one out: 64, 125, 216, 343, 512, 721", "options": ["343", "512", "721", "216"], "answer": "721", "explanation": "All others are perfect cubes (4^3, 5^3, etc.). 721 is not."},
-{
+[
+  {
     "company": "TCS",
     "questions": [
       {
@@ -642,10 +643,12 @@ QUESTIONS = [
         "options": ["12", "16", "24", "48"],
         "answer": "48",
         "explanation": "Numbers are 12 and 16. LCM(12, 16) = 48."
-      },
+      }
+    ]
+  },
   {
     "company": "Virtusa",
-    "questions":
+    "questions": [
       {
         "id": 1,
         "topic": "Ages",
@@ -662,7 +665,6 @@ QUESTIONS = [
         "answer": "7.2",
         "explanation": "Speed = 600m/300s = 2 m/s. 2 * (18/5) = 7.2 km/hr."
       },
-  }
       {
         "id": 3,
         "topic": "Logical Coding",
@@ -726,8 +728,10 @@ QUESTIONS = [
         "options": ["960", "1440", "1080", "1920"],
         "answer": "1440",
         "explanation": "Multiplied by consecutive integers: x2, x3, x4, x5, x6. 240 * 6 = 1440."
-      },
-     }
+      }
+    ]
+  }
+]
 ]
 
 
