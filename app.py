@@ -6,20 +6,18 @@ import random
 from datetime import datetime, date
 import plotly.express as px
  
-# --- DATABASE SETUP ---
-DB_FILE = "user_stats_v2.json"
-
+# --- DATA STORAGE HANDLERS ---
 def load_data():
-    if os.path.exists(DB_FILE):
-        try:
-            with open(DB_FILE, "r") as f:
-                return json.load(f)
-        except:
-            pass
-    return {"history": [], "last_login": None, "streak": 0, "company_scores": {}}
+    if not os.path.exists("user_profile.json"):
+        return {"streak": 1, "history": [], "last_login": str(date.today())}
+    try:
+        with open("user_profile.json", "r") as f:
+            return json.load(f)
+    except:
+        return {"streak": 1, "history": [], "last_login": str(date.today())}
 
 def save_data(data):
-    with open(DB_FILE, "w") as f:
+    with open("user_profile.json", "w") as f:
         json.dump(data, f)
 
 # --- ADVANCED QUESTION BANK (Fixed Syntax) ---
