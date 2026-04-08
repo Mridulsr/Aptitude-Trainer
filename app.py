@@ -601,7 +601,11 @@ with col_a:
 
 # 2. Extract Questions based on Company
 if target_comp == "All":
-    base_pool = [q for item in QUESTIONS for q in item["questions"]]
+    base_pool = [
+    q for item in QUESTIONS 
+    if isinstance(item, dict) and "questions" in item 
+    for q in item.get("questions", [])
+]
 else:
     selected_comp_data = next(item for item in QUESTIONS if item["company"] == target_comp)
     base_pool = selected_comp_data["questions"]
