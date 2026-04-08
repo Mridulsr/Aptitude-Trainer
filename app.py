@@ -662,6 +662,7 @@ QUESTIONS = [
         "answer": "7.2",
         "explanation": "Speed = 600m/300s = 2 m/s. 2 * (18/5) = 7.2 km/hr."
       },
+  }
       {
         "id": 3,
         "topic": "Logical Coding",
