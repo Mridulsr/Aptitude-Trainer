@@ -686,6 +686,33 @@ QUESTIONS = [
     "explanation": "(0.2)^3y = (0.2)^3 => 3y = 3 => y = 1. (0.25)^1 = 0.25."
 
   },
+    # --- EASY LEVEL ---
+    {"id": 1, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the unit digit in (7^95 - 3^58)?", "options": ["0", "4", "6", "7"], "answer": "4", "explanation": "7^95 ends in 3; 3^58 ends in 9. 13-9=4."},
+    {"id": 110, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the sum of the first 15 odd numbers?", "options": ["225", "200", "196", "256"], "answer": "225", "explanation": "Sum of first n odd numbers is n^2. 15^2 = 225."},
+    {"id": 111, "company": "TCS", "topic": "Logical", "level": "Easy", "question": "If DRIVER = 12, PEDESTRIAN = 20, ACCIDENT = 16, then what is CAR?", "options": ["3", "6", "8", "10"], "answer": "6", "explanation": "The pattern is (Number of letters in the word) * 2. CAR has 3 letters, so 3 * 2 = 6."},
+    {"id": 170, "company": "Accenture", "topic": "Arithmetic", "level": "Easy", "question": "What is 20% of 50 + 50% of 20?", "options": ["10", "20", "30", "40"], "answer": "20", "explanation": "10 + 10 = 20."},
+    {"id": 118, "company": "Accenture", "topic": "Arithmetic", "level": "Easy", "question": "What is the value of 12.5% of 800?", "options": ["100", "125", "80", "160"], "answer": "100", "explanation": "1/8 of 800 is 100."},
+    {"id": 130, "company": "Infosys", "topic": "Arithmetic", "level": "Easy", "question": "Solve: 0.003 * 0.02", "options": ["0.06", "0.006", "0.0006", "0.00006"], "answer": "0.00006", "explanation": "3*2=6 with 5 decimal places."},
+    {"id": 150, "company": "Wipro", "topic": "Arithmetic", "level": "Easy", "question": "What is the square root of 0.0009?", "options": ["0.3", "0.03", "0.003", "0.9"], "answer": "0.03", "explanation": "0.03 * 0.03 = 0.0009."},
+    {"id": 101, "company": "Wipro", "topic": "Logical", "level": "Easy", "question": "Find the missing term: 2, 6, 12, 20, 30, ?", "options": ["40", "42", "44", "46"], "answer": "42", "explanation": "Pattern: +4, +6, +8, +10, +12. 30 + 12 = 42."},
+
+    # --- MEDIUM LEVEL ---
+    {"id": 103, "company": "TCS", "topic": "Arithmetic", "level": "Medium", "question": "What is the remainder when 2^31 is divided by 7?", "options": ["1", "2", "3", "4"], "answer": "2", "explanation": "2^3 = 8 (rem 1). (2^3)^10 * 2^1 gives rem 2."},
+    {"id": 100, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "A sum of money at CI doubles in 5 years. In how many years will it be 8 times?", "options": ["10", "15", "20", "25"], "answer": "15", "explanation": "2^3 = 8, so 5 * 3 = 15 years."},
+    {"id": 5, "company": "Infosys", "topic": "Arithmetic", "level": "Medium", "question": "Ages of A and B are in ratio 5:7. 18 years ago, ratio was 8:13. Present ages?", "options": ["50, 70", "40, 56", "60, 84", "45, 63"], "answer": "50, 70", "explanation": "Solving (5x-18)/(7x-18) = 8/13 gives x=10. Ages = 50, 70."},
+    {"id": 111, "company": "Wipro", "topic": "Arithmetic", "level": "Medium", "question": "A can do work in 15 days, B in 20. Work together for 4 days. Fraction left?", "options": ["7/15", "8/15", "11/15", "1/4"], "answer": "8/15", "explanation": "1 - 4(1/15 + 1/20) = 8/15."},
+
+    # --- HARD LEVEL ---
+    {"id": 120, "company": "TCS", "topic": "Arithmetic", "level": "Hard", "question": "A man's speed with current is 15 km/hr and current is 2.5 km/hr. Speed against current?", "options": ["8.5", "9", "10", "12.5"], "answer": "10 km/hr", "explanation": "Still water = 15-2.5 = 12.5. Against = 12.5-2.5 = 10."},
+    {"id": 16, "company": "Amazon", "topic": "Arithmetic", "level": "Hard", "question": "If SP is doubled, profit triples. Find profit %.", "options": ["66.66%", "100%", "105%", "120%"], "answer": "100%", "explanation": "3(SP-CP) = 2SP-CP => SP=2CP. Profit = 100%."},
+    {"id": 180, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "Shopkeeper marks goods 20% above CP and allows 10% discount. Profit %?", "options": ["8%", "10%", "12%", "15%"], "answer": "8%", "explanation": "1.2 * 0.9 = 1.08, which is an 8% increase."},
+    {"id": 13, "company": "Cognizant", "topic": "Arithmetic", "level": "Hard", "question": "Difference between SI and CI on Rs. 5000 for 2 years at 10% is:", "options": ["25", "50", "75", "100"], "answer": "50", "explanation": "Diff = P(R/100)^2 = 5000 * (10/100)^2 = 50."},
+    {"id": 140, "company": "Infosys", "topic": "Arithmetic", "level": "Hard", "question": "Card from 52. Prob of King or Heart?", "options": ["4/13", "17/52", "1/4", "1/13"], "answer": "4/13", "explanation": "(4 + 13 - 1)/52 = 16/52 = 4/13."},
+
+    # --- ADVANCED LEVEL ---
+    {"id": 501, "company": "Accenture", "topic": "Arithmetic", "level": "Advanced", "question": "Marked price of a shirt is ₹400. 10% discount gives 26% profit. Marked Price?", "options": ["₹540", "₹560", "₹600", "₹620"], "answer": "₹560", "explanation": "SP = 1.26 * 400 = 504. 0.9 * MP = 504 => MP = 560."},
+    {"id": 407, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Advanced", "question": "A beats B by 10m in 100m, B beats C by 10m in 100m. A beats C by?", "options": ["19m", "20m", "21m", "25m"], "answer": "19m", "explanation": "A:B=100:90, B:C=100:90. A:C = 100:81. Difference is 19m."},
+    {"id": 411, "company": "Wipro", "topic": "Arithmetic", "level": "Advanced", "question": "Find the last two digits of 2^2026.", "options": ["04", "36", "76", "84"], "answer": "84", "explanation": "2^10 ends in 24. 2^20 ends in 76. 2^2020 ends in 76. 76 * 2^6 (64) = 84."},
     
 ]
 
