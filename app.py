@@ -735,7 +735,6 @@ QUESTIONS = [
 
     # --- ABSTRACT REASONING / PATTERNS ---
     {"id": 901, "company": "Accenture", "topic": "Logical", "level": "Advanced", "question": "If 5 + 3 = 28, 9 + 1 = 810, 8 + 6 = 214, then 5 + 4 = ?", "options": ["19", "91", "120", "20"], "answer": "19", "explanation": "Pattern: (A-B) then (A+B). (5-4)=1, (5+4)=9. Result = 19."},
-]
     
 ]
 
