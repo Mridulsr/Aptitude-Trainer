@@ -713,6 +713,29 @@ QUESTIONS = [
     {"id": 501, "company": "Accenture", "topic": "Arithmetic", "level": "Advanced", "question": "Marked price of a shirt is ₹400. 10% discount gives 26% profit. Marked Price?", "options": ["₹540", "₹560", "₹600", "₹620"], "answer": "₹560", "explanation": "SP = 1.26 * 400 = 504. 0.9 * MP = 504 => MP = 560."},
     {"id": 407, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Advanced", "question": "A beats B by 10m in 100m, B beats C by 10m in 100m. A beats C by?", "options": ["19m", "20m", "21m", "25m"], "answer": "19m", "explanation": "A:B=100:90, B:C=100:90. A:C = 100:81. Difference is 19m."},
     {"id": 411, "company": "Wipro", "topic": "Arithmetic", "level": "Advanced", "question": "Find the last two digits of 2^2026.", "options": ["04", "36", "76", "84"], "answer": "84", "explanation": "2^10 ends in 24. 2^20 ends in 76. 2^2020 ends in 76. 76 * 2^6 (64) = 84."},
+    {"id": 601, "company": "Accenture", "topic": "Arithmetic", "level": "Easy", "question": "The ratio of two numbers is 3:4 and their HCF is 4. Find their LCM.", "options": ["12", "16", "24", "48"], "answer": "48", "explanation": "Numbers are 3*4=12 and 4*4=16. LCM(12, 16) = 48."},
+    {"id": 602, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "A person crosses a 600m long street in 5 minutes. What is his speed in km/hr?", "options": ["3.6", "7.2", "8.4", "10"], "answer": "7.2", "explanation": "Speed = 600m / 300s = 2 m/s. 2 * 18/5 = 7.2 km/hr."},
+    {"id": 603, "company": "Accenture", "topic": "Arithmetic", "level": "Hard", "question": "A sum of money at CI amounts to ₹4624 in 2 years and ₹4913 in 3 years. Find the rate.", "options": ["4.25%", "5%", "6.25%", "8%"], "answer": "6.25%", "explanation": "Rate = [(4913-4624)/4624] * 100 = (289/4624) * 100 = 6.25%."},
+    {"id": 604, "company": "Accenture", "topic": "Arithmetic", "level": "Medium", "question": "The average of 20 numbers is zero. At most, how many can be greater than zero?", "options": ["0", "1", "10", "19"], "answer": "19", "explanation": "19 numbers could be positive, and one large negative number could balance them to zero."},
+    {"id": 605, "company": "Accenture", "topic": "Arithmetic", "level": "Easy", "question": "If 20% of a = b, then b% of 20 is the same as:", "options": ["4% of a", "5% of a", "20% of a", "None"], "answer": "4% of a", "explanation": "b = 0.2a. b% of 20 = (0.2a/100)*20 = 0.04a, which is 4% of a."},
+
+    # --- LOGICAL REASONING (Accenture Style) ---
+    {"id": 701, "company": "Accenture", "topic": "Logical", "level": "Easy", "question": "If 'ORANGE' is coded as 'PSBOHF', how is 'APPLE' coded?", "options": ["BQQMF", "BPPMF", "BQQNF", "BQPLF"], "answer": "BQQMF", "explanation": "Each letter is shifted +1 (A+1=B, P+1=Q, etc.)."},
+    {"id": 702, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "Which word does not belong with the others? (Tyre, Steering Wheel, Engine, Car)", "options": ["Tyre", "Steering Wheel", "Engine", "Car"], "answer": "Car", "explanation": "Tyre, Steering Wheel, and Engine are parts of a Car."},
+    {"id": 703, "company": "Accenture", "topic": "Logical", "level": "Hard", "question": "Statements: Some actors are singers. All singers are dancers. Conclusion: (I) Some actors are dancers. (II) No singer is an actor.", "options": ["Only I follows", "Only II follows", "Both follow", "Neither follows"], "answer": "Only I follows", "explanation": "Since some actors are singers and all singers are dancers, those specific actors are also dancers."},
+    {"id": 704, "company": "Accenture", "topic": "Logical", "level": "Medium", "question": "Complete the series: 1, 4, 9, 16, 25, ?", "options": ["30", "35", "36", "49"], "answer": "36", "explanation": "Series of squares: 1^2, 2^2, 3^2, 4^2, 5^2, 6^2=36."},
+    {"id": 705, "company": "Accenture", "topic": "Logical", "level": "Easy", "question": "In a row of trees, one tree is 7th from either end. How many trees are there?", "options": ["11", "13", "14", "15"], "answer": "13", "explanation": "Total = (Left + Right) - 1 = (7 + 7) - 1 = 13."},
+
+    # --- VERBAL ABILITY (Accenture Style) ---
+    {"id": 801, "company": "Accenture", "topic": "Verbal", "level": "Easy", "question": "Synonym for 'CANDID':", "options": ["Frank", "Hidden", "Greedy", "Polite"], "answer": "Frank", "explanation": "Candid means truthful and straightforward."},
+    {"id": 802, "company": "Accenture", "topic": "Verbal", "level": "Medium", "question": "Antonym for 'ENORMOUS':", "options": ["Huge", "Tiny", "Average", "Heavy"], "answer": "Tiny", "explanation": "Enormous means huge; tiny is the opposite."},
+    {"id": 803, "company": "Accenture", "topic": "Verbal", "level": "Easy", "question": "Find the correctly spelt word:", "options": ["Commitee", "Committee", "Comittee", "Committe"], "answer": "Committee", "explanation": "Correct spelling is C-O-M-M-I-T-T-E-E."},
+    {"id": 804, "company": "Accenture", "topic": "Verbal", "level": "Hard", "question": "Choose the best word: The manager was _____ with the employee's performance.", "options": ["Satisfy", "Satisfied", "Satisfying", "Satisfaction"], "answer": "Satisfied", "explanation": "Grammatically correct form is the past participle 'satisfied'."},
+    {"id": 805, "company": "Accenture", "topic": "Verbal", "level": "Medium", "question": "Synonym for 'ABANDON':", "options": ["Keep", "Forsake", "Adopt", "Try"], "answer": "Forsake", "explanation": "Abandon means to leave or give up; forsake is a synonym."},
+
+    # --- ABSTRACT REASONING / PATTERNS ---
+    {"id": 901, "company": "Accenture", "topic": "Logical", "level": "Advanced", "question": "If 5 + 3 = 28, 9 + 1 = 810, 8 + 6 = 214, then 5 + 4 = ?", "options": ["19", "91", "120", "20"], "answer": "19", "explanation": "Pattern: (A-B) then (A+B). (5-4)=1, (5+4)=9. Result = 19."},
+]
     
 ]
 
