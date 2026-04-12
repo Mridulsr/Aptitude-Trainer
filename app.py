@@ -777,9 +777,8 @@ with st.sidebar:
 
 # Final Pool Selection
 final_pool = [q for q in comp_qs if 
-              (sel_topic == "All" or q["topic"] == sel_topic) and 
-              (q["level"] == sel_level)]
-
+              (sel_topic == "All" or q.get("topic") == sel_topic) and 
+              (q.get("level") == sel_level)]
 # --- 5. QUIZ UI ---
 st.title(f"🚀 {sel_comp} Placement Drive")
 
