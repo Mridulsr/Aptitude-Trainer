@@ -869,6 +869,7 @@ with st.sidebar:
 # If "company" is missing, it defaults to "Unknown"
 comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS)))
 sel_comp = st.selectbox("🎯 Target Company", comps)
+comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
 
     # 2. Topic Filter (Dynamic)
     # --- Correct Alignment ---
