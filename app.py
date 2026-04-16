@@ -822,6 +822,25 @@ QUESTIONS = [
     {"id": 1001, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Easy", "question": "A:B = 3:5, B:C = 2:3. Find A:C.", "options": ["6:15", "3:3", "2:5", "5:2"], "answer": "6:15", "explanation": "A/C = (A/B)*(B/C) = (3/5)*(2/3) = 6/15."},
     {"id": 1002, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Hard", "question": "80L milk. 8L replaced with water. Repeat twice more. Final milk?", "options": ["58.32", "60", "55.4", "51.2"], "answer": "58.32", "explanation": "80 * (1 - 8/80)^3 = 80 * (0.9)^3 = 58.32L."},
     {"id": 1003, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Advanced", "question": "Sum amounts to 5120 in 3yrs, 7290 in 6yrs (CI). Rate?", "options": ["10%", "12.5%", "15%", "20%"], "answer": "12.5%", "explanation": " (1+r)^3 = 7290/5120 = 729/512 = (9/8)^3. 1+r = 1.125, r=12.5%."},
+    {"id": 1, "type": "DSA", "level": "Easy", "q": "Two Sum: Find indices of two numbers that add to target.", "tag": "Arrays"},
+    {"id": 2, "type": "DSA", "level": "Easy", "q": "Valid Parentheses: Check if brackets are balanced.", "tag": "Stack"},
+    # MEDIUM (31-80)
+    {"id": 31, "type": "DSA", "level": "Medium", "q": "LRU Cache: Implement a Least Recently Used cache.", "tag": "Design"},
+    {"id": 32, "type": "DSA", "level": "Medium", "q": "Number of Islands: Count connected components in a grid.", "tag": "BFS/DFS"},
+    # HARD (81-100)
+    {"id": 81, "type": "DSA", "level": "Hard", "q": "Median of Two Sorted Arrays: Find median in O(log(m+n)).", "tag": "Binary Search"},
+    {"id": 82, "type": "Behavioral", "level": "Hard", "q": "LP: Tell me about a time you had to make a decision without all the data.", "tag": "Ownership"},
+    {"id": 1, "level": "Easy", "q": "Unit digit of (7^95 - 3^58)?", "ans": "4"},
+    {"id": 15, "level": "Medium", "q": "A sum at CI doubles in 5 years. In how many years will it be 8 times?", "ans": "15"},
+    # LOGICAL (41-80)
+    {"id": 41, "level": "Easy", "q": "If DRIVER=12, PEDESTRIAN=20, then CAR=?", "ans": "6"},
+    # PROGRAMMING (81-100)
+    {"id": 81, "level": "Advanced", "q": "Find the second smallest element in an array without sorting.", "tag": "Logic"},
+    {"id": 1, "level": "Medium", "q": "A beats B by 10m in 100m. B beats C by 10m. A beats C by?", "ans": "19m"},
+    {"id": 2, "level": "Hard", "q": "Probability that a leap year has 53 Sundays?", "ans": "2/7"},
+    {"id": 3, "level": "Advanced", "q": "80L milk, 8L replaced with water. Repeat 3 times. Final milk?", "ans": "58.32L"},
+]
+]
 ]
 
 # --- 2. STORAGE ENGINE ---
