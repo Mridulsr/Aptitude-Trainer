@@ -841,65 +841,54 @@ QUESTIONS = [
     {"id": 3, "level": "Advanced", "q": "80L milk, 8L replaced with water. Repeat 3 times. Final milk?", "ans": "58.32L"},
 ]
 
-# --- 2. STORAGE ENGINE ---
-def load_perf():
-    if os.path.exists("stats.json"):
-        with open("stats.json", "r") as f: return json.load(f)
-    return {"streak": 0, "last_active": "", "history": []}
-
-def save_perf(data):
-    with open("stats.json", "w") as f: json.dump(data, f)
-
-# --- 3. APP CONFIG ---
-st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
-user_stats = load_perf()
-
-# Streak logic
-today = str(date.today())
-if user_stats["last_active"] != today:
-    user_stats["streak"] += 1
-    user_stats["last_active"] = today
-    save_perf(user_stats)
-
-# --- 4. NAVIGATION ---
+# --- 4. NAVIGATION & FILTERS ---
 with st.sidebar:
     st.title(f"🔥 Streak: {user_stats['streak']} Days")
     st.divider()
     
-# If "company" is missing, it defaults to "Unknown"
-comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS)))
-sel_comp = st.selectbox("🎯 Target Company", comps)
-comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
+    # 1. Company Filter (Safe selection)
+    comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS if "company" in q)))
+    sel_comp = st.selectbox("🎯 Target Company", comps)
+    
+    # Filter questions by selected company first
+    comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
 
-    # 2. Topic Filter (Dynamic)
-    # --- Correct Alignment ---
-comps = sorted(list(set(q["company"] for q in QUESTIONS if "company" in q)))
-sel_comp = st.selectbox("🎯 Target Company", comps)
-comp_qs = [q for q in QUESTIONS if q["company"] == sel_comp] # This must align with 'sel_comp'
+    # 2. Topic Filter (Dynamic based on selected company)
+    topics = sorted(list(set(q.get("topic", "General") for q in comp_qs)))
+    topics = ["All"] + topics
+    sel_topic = st.selectbox("📚 Select Topic", topics)
 
-    # --- All lines must be vertically aligned ---
-comps = sorted(list(set(q["company"] for q in QUESTIONS if "company" in q)))
-sel_comp = st.selectbox("🎯 Target Company", comps)
-comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
-sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
-# Final Pool Selection
-final_pool = [q for q in comp_qs if 
-              (sel_topic == "All" or q.get("topic") == sel_topic) and 
-              (q.get("level") == sel_level)]
-# --- 5. QUIZ UI ---
+    # 3. Difficulty Filter
+    sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
+
+# --- 5. DATA SELECTION ---
+# Final Pool Selection (Applying all filters)
+final_pool = [
+    q for q in comp_qs if 
+    (sel_topic == "All" or q.get("topic") == sel_topic) and 
+    (q.get("level") == sel_level)
+]
+
+# --- 6. QUIZ UI ---
 st.title(f"🚀 {sel_comp} Placement Drive")
 
 if not final_pool:
     st.info(f"No {sel_level} level questions available for {sel_topic} yet.")
 else:
-    if 'q_no' not in st.session_state: st.session_state.q_no = 0
+    if 'q_no' not in st.session_state: 
+        st.session_state.q_no = 0
     
-    curr_q = final_pool[st.session_state.q_no % len(final_pool)]
+    # Reset question number if it exceeds the current pool size
+    if st.session_state.q_no >= len(final_pool):
+        st.session_state.q_no = 0
+        
+    curr_q = final_pool[st.session_state.q_no]
     
     st.info(f"Topic: {curr_q['topic']} | Difficulty: {curr_q['level']}")
     st.write(f"### {curr_q['question']}")
     
-    choice = st.radio("Options:", curr_q["options"], key=f"rad_{curr_q['id']}")
+    # Using a unique key combined with company and ID to prevent state clashes
+    choice = st.radio("Options:", curr_q["options"], key=f"rad_{sel_comp}_{curr_q['id']}")
     
     col1, col2 = st.columns([1, 4])
     with col1:
@@ -908,56 +897,17 @@ else:
                 st.success("✅ Correct!")
             else:
                 st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
+            
             with st.expander("Explanation"):
                 st.write(curr_q["explanation"])
-                if "P(" in curr_q["explanation"]:
+                # Logic to show LaTeX if it's a math-heavy explanation
+                if "P(" in curr_q["explanation"] or "^" in curr_q["explanation"]:
                     st.latex(r"A = P(1 + \frac{R}{100})^t")
                     
     with col2:
         if st.button("Next ➡"):
-            st.session_state.q_no += 1
+            st.session_state.q_no = (st.session_state.q_no + 1) % len(final_pool)
             st.rerun()
-
-# --- 6. ANALYTICS ---
-st.divider()
-st.subheader("📈 Your Journey")
-if user_stats["history"]:
-    df = pd.DataFrame(user_stats["history"])
-    st.plotly_chart(px.line(df, x="date", y="score"), use_container_width=True)
-else:
-    st.caption("Complete a full set to see your progress graph here.")
-
-import random
-
-class QuestionBankGenerator:
-    def __init__(self, company_name):
-        self.company = company_name
-        self.topics = ["Arithmetic", "Logical", "Verbal", "Coding", "Puzzles"]
-        
-    def generate_100_questions(self):
-        pool = []
-        for i in range(1, 101):
-            # Define difficulty distribution
-            if i <= 40: level = "Easy"
-            elif i <= 80: level = "Medium"
-            else: level = "Hard/Advanced"
-                
-            topic = random.choice(self.topics)
-            
-            question = {
-                "id": i,
-                "company": self.company,
-                "level": level,
-                "topic": topic,
-                "question_template": f"Practice Question {i} for {self.company}",
-                "status": "Ready for Review"
-            }
-            pool.append(question)
-        return pool
-
-# To generate for all companies:
-companies = ["TCS", "Accenture", "Infosys", "Wipro", "Cognizant", "Amazon", "Google", "Goldman Sachs", "Capgemini", "IBM"]
-all_banks = {comp: QuestionBankGenerator(comp).generate_100_questions() for comp in companies}
 
 # Access example:
 print(f"Generated {len(all_banks['Google'])} questions for Google.")
