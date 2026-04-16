@@ -5,6 +5,20 @@ import os
 from datetime import date
 import plotly.express as px
 
+# --- 1. STORAGE ENGINE ---
+def load_perf():
+    if os.path.exists("stats.json"):
+        try:
+            with open("stats.json", "r") as f: 
+                return json.load(f)
+        except:
+            pass
+    return {"streak": 0, "last_active": "", "history": []}
+
+def save_perf(data):
+    with open("stats.json", "w") as f: 
+        json.dump(data, f)
+
 # --- 1. THE COMPLETE DATASET ---
 # CRITICAL: Ensure every { } block ends with a comma, and the final list ends with ]
 QUESTIONS = [
@@ -841,112 +855,90 @@ QUESTIONS = [
     {"id": 3, "level": "Advanced", "q": "80L milk, 8L replaced with water. Repeat 3 times. Final milk?", "ans": "58.32L"},
 ]
 
-# --- 1. STORAGE ENGINE ---
-def load_perf():
-    if os.path.exists("stats.json"):
-        try:
-            with open("stats.json", "r") as f: 
-                return json.load(f)
-        except:
-            pass
-    return {"streak": 0, "last_active": "", "history": []}
-
-def save_perf(data):
-    with open("stats.json", "w") as f: 
-        json.dump(data, f)
-
-# --- 2. DATA SOURCE (The Questions) ---
-# Ensure this list is populated. I've added samples to ensure visibility.
-QUESTIONS = [
-    {"id": 1, "company": "TCS", "level": "Easy", "topic": "Arithmetic", "question": "What is the unit digit of 7^95?", "options": ["7", "9", "3", "1"], "answer": "3", "explanation": "Cyclicity of 7 is 4. 95/4 leaves remainder 3. 7^3 = 343, so unit digit is 3."},
-    {"id": 2, "company": "Amazon", "level": "Medium", "topic": "Coding", "question": "Which data structure is best for LRU Cache?", "options": ["Stack", "Queue", "Hashmap + Doubly Linked List", "BST"], "answer": "Hashmap + Doubly Linked List", "explanation": "Hashmap provides O(1) access, DLL provides O(1) removal/addition."},
-    {"id": 3, "company": "Google", "level": "Hard", "topic": "Logical", "question": "If (1/5)^3y = 0.008, find (0.25)^y", "options": ["0.25", "0.5", "0.75", "1"], "answer": "0.25", "explanation": "0.008 is (1/5)^3, so 3y=3, y=1. 0.25^1 = 0.25."},
-    # ... Add your other 100+ questions here ...
-]
-
-# --- 3. APP CONFIG & SESSION INITIALIZATION ---
+# --- 3. APP CONFIG ---
 st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
 
 if 'user_stats' not in st.session_state:
     st.session_state.user_stats = load_perf()
 
-if 'q_no' not in st.session_state:
-    st.session_state.q_no = 0
-
-# Streak Logic
+# Streak logic
 today = str(date.today())
 if st.session_state.user_stats["last_active"] != today:
     st.session_state.user_stats["streak"] += 1
     st.session_state.user_stats["last_active"] = today
     save_perf(st.session_state.user_stats)
 
-# --- 4. SIDEBAR NAVIGATION ---
+# --- 4. NAVIGATION & FILTERS ---
 with st.sidebar:
     st.title(f"🔥 Streak: {st.session_state.user_stats['streak']} Days")
     st.divider()
     
-    # Filter: Company
+    # 1. Company Filter
     comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS)))
     sel_comp = st.selectbox("🎯 Target Company", comps)
     
-    # Filter: Questions belonging only to selected company
+    # Filter by Company
     comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
 
-    # Filter: Topic
+    # 2. Topic Filter
     topics = sorted(list(set(q.get("topic", "General") for q in comp_qs)))
     topics = ["All"] + topics
     sel_topic = st.selectbox("📚 Select Topic", topics)
 
-    # Filter: Difficulty
+    # 3. Difficulty Filter
     sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
 
-# --- 5. FINAL POOL SELECTION ---
+# --- 5. DATA SELECTION ---
 final_pool = [
     q for q in comp_qs if 
     (sel_topic == "All" or q.get("topic") == sel_topic) and 
     (q.get("level") == sel_level)
 ]
 
-# --- 6. MAIN QUIZ UI ---
+# --- 6. QUIZ UI ---
 st.title(f"🚀 {sel_comp} Placement Drive")
 
 if not final_pool:
-    st.warning(f"No {sel_level} level questions found for {sel_topic} in {sel_comp}. Try changing the filters!")
+    st.info(f"No {sel_level} level questions available for {sel_topic} yet. Try another combination!")
 else:
-    # Reset question index if it goes out of bounds after changing filters
+    if 'q_no' not in st.session_state: st.session_state.q_no = 0
+    
+    # Reset q_no if it's out of bounds for the current filtered pool
     if st.session_state.q_no >= len(final_pool):
         st.session_state.q_no = 0
         
     curr_q = final_pool[st.session_state.q_no]
     
-    st.info(f"Question {st.session_state.q_no + 1} of {len(final_pool)} | {curr_q['topic']}")
+    st.info(f"Topic: {curr_q['topic']} | Difficulty: {curr_q['level']}")
     st.write(f"### {curr_q['question']}")
     
-    # Radio options
-    choice = st.radio("Choose the correct option:", curr_q["options"], key=f"q_{curr_q['id']}_{st.session_state.q_no}")
+    # Use a unique key based on ID and index to keep radio state clean
+    choice = st.radio("Options:", curr_q["options"], key=f"rad_{curr_q['id']}")
     
-    col1, col2 = st.columns([1, 5])
+    col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("Submit"):
             if choice == curr_q["answer"]:
                 st.success("✅ Correct!")
             else:
                 st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
-            with st.expander("See Explanation"):
+            
+            with st.expander("Explanation"):
                 st.write(curr_q["explanation"])
-                if "^" in curr_q["explanation"] or "/" in curr_q["explanation"]:
-                    st.latex(r"Result = \frac{base^{exponent}}{divisor}")
+                if any(x in curr_q["explanation"] for x in ["^", "/", "P("]):
+                    st.latex(r"x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}")
                     
     with col2:
-        if st.button("Next Question ➡"):
+        if st.button("Next ➡"):
             st.session_state.q_no = (st.session_state.q_no + 1) % len(final_pool)
             st.rerun()
 
 # --- 7. ANALYTICS ---
 st.divider()
-st.subheader("📈 Progress Tracking")
+st.subheader("📈 Your Journey")
 if st.session_state.user_stats["history"]:
     df = pd.DataFrame(st.session_state.user_stats["history"])
-    st.line_chart(df.set_index("date")["score"])
+    fig = px.line(df, x="date", y="score", title="Score Over Time")
+    st.plotly_chart(fig, use_container_width=True)
 else:
-    st.caption("Your performance history will appear here once you complete sets.")
+    st.caption("Complete more questions to see your progress graph here."
