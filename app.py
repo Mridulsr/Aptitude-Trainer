@@ -877,9 +877,11 @@ comps = sorted(list(set(q["company"] for q in QUESTIONS if "company" in q)))
 sel_comp = st.selectbox("🎯 Target Company", comps)
 comp_qs = [q for q in QUESTIONS if q["company"] == sel_comp] # This must align with 'sel_comp'
 
-    # 3. Difficulty Filter
-    sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
-
+    # --- All lines must be vertically aligned ---
+comps = sorted(list(set(q["company"] for q in QUESTIONS if "company" in q)))
+sel_comp = st.selectbox("🎯 Target Company", comps)
+comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
+sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
 # Final Pool Selection
 final_pool = [q for q in comp_qs if 
               (sel_topic == "All" or q.get("topic") == sel_topic) and 
