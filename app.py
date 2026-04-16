@@ -843,8 +843,12 @@ QUESTIONS = [
 
 # --- 4. NAVIGATION & FILTERS ---
 with st.sidebar:
-    st.title(f"🔥 Streak: {user_stats['streak']} Days")
-    st.divider()
+    if 'user_stats' not in st.session_state:
+    st.session_state.user_stats = load_perf()
+
+# Then use:
+st.title(f"🔥 Streak: {st.session_state.user_stats['streak']} Days")
+st.divider()
     
     # 1. Company Filter (Safe selection)
     comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS if "company" in q)))
