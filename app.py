@@ -866,9 +866,9 @@ with st.sidebar:
     st.title(f"🔥 Streak: {user_stats['streak']} Days")
     st.divider()
     
-    # 1. Company Filter
-    comps = sorted(list(set(q["company"] for q in QUESTIONS)))
-    sel_comp = st.selectbox("🎯 Target Company", comps)
+# Only include q if "company" is actually a key in that dictionary
+comps = sorted(list(set(q["company"] for q in QUESTIONS if "company" in q)))
+sel_comp = st.selectbox("🎯 Target Company", comps)
     
     # 2. Topic Filter (Dynamic)
     comp_qs = [q for q in QUESTIONS if q["company"] == sel_comp]
