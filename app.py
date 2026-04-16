@@ -871,10 +871,11 @@ comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS)))
 sel_comp = st.selectbox("🎯 Target Company", comps)
 
     # 2. Topic Filter (Dynamic)
-    comp_qs = [q for q in QUESTIONS if q["company"] == sel_comp]
-    topics = sorted(list(set(q["topic"] for q in comp_qs)))
-    sel_topic = st.selectbox("📚 Topic", ["All"] + topics)
-    
+    # --- Correct Alignment ---
+comps = sorted(list(set(q["company"] for q in QUESTIONS if "company" in q)))
+sel_comp = st.selectbox("🎯 Target Company", comps)
+comp_qs = [q for q in QUESTIONS if q["company"] == sel_comp] # This must align with 'sel_comp'
+
     # 3. Difficulty Filter
     sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
 
