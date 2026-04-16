@@ -841,52 +841,112 @@ QUESTIONS = [
     {"id": 3, "level": "Advanced", "q": "80L milk, 8L replaced with water. Repeat 3 times. Final milk?", "ans": "58.32L"},
 ]
 
-# --- 1. STORAGE ENGINE (Must be defined BEFORE it is used) ---
+# --- 1. STORAGE ENGINE ---
 def load_perf():
     if os.path.exists("stats.json"):
         try:
             with open("stats.json", "r") as f: 
                 return json.load(f)
         except:
-            pass # If file is corrupted, return default
+            pass
     return {"streak": 0, "last_active": "", "history": []}
 
 def save_perf(data):
     with open("stats.json", "w") as f: 
         json.dump(data, f)
 
-# --- 2. APP CONFIG ---
+# --- 2. DATA SOURCE (The Questions) ---
+# Ensure this list is populated. I've added samples to ensure visibility.
+QUESTIONS = [
+    {"id": 1, "company": "TCS", "level": "Easy", "topic": "Arithmetic", "question": "What is the unit digit of 7^95?", "options": ["7", "9", "3", "1"], "answer": "3", "explanation": "Cyclicity of 7 is 4. 95/4 leaves remainder 3. 7^3 = 343, so unit digit is 3."},
+    {"id": 2, "company": "Amazon", "level": "Medium", "topic": "Coding", "question": "Which data structure is best for LRU Cache?", "options": ["Stack", "Queue", "Hashmap + Doubly Linked List", "BST"], "answer": "Hashmap + Doubly Linked List", "explanation": "Hashmap provides O(1) access, DLL provides O(1) removal/addition."},
+    {"id": 3, "company": "Google", "level": "Hard", "topic": "Logical", "question": "If (1/5)^3y = 0.008, find (0.25)^y", "options": ["0.25", "0.5", "0.75", "1"], "answer": "0.25", "explanation": "0.008 is (1/5)^3, so 3y=3, y=1. 0.25^1 = 0.25."},
+    # ... Add your other 100+ questions here ...
+]
+
+# --- 3. APP CONFIG & SESSION INITIALIZATION ---
 st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
 
-# --- 3. INITIALIZE STATE ---
 if 'user_stats' not in st.session_state:
     st.session_state.user_stats = load_perf()
 
-# Streak logic
+if 'q_no' not in st.session_state:
+    st.session_state.q_no = 0
+
+# Streak Logic
 today = str(date.today())
 if st.session_state.user_stats["last_active"] != today:
     st.session_state.user_stats["streak"] += 1
     st.session_state.user_stats["last_active"] = today
     save_perf(st.session_state.user_stats)
 
-# --- 4. NAVIGATION & FILTERS ---
+# --- 4. SIDEBAR NAVIGATION ---
 with st.sidebar:
     st.title(f"🔥 Streak: {st.session_state.user_stats['streak']} Days")
     st.divider()
     
-    # 1. Company Filter
-    # Ensure QUESTIONS list is defined somewhere above this line!
-    comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS if "company" in q)))
+    # Filter: Company
+    comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS)))
     sel_comp = st.selectbox("🎯 Target Company", comps)
     
+    # Filter: Questions belonging only to selected company
     comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
 
-    # 2. Topic Filter
+    # Filter: Topic
     topics = sorted(list(set(q.get("topic", "General") for q in comp_qs)))
     topics = ["All"] + topics
     sel_topic = st.selectbox("📚 Select Topic", topics)
 
-    # 3. Difficulty Filter
+    # Filter: Difficulty
     sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
 
-# ... rest of your Quiz UI code ...
+# --- 5. FINAL POOL SELECTION ---
+final_pool = [
+    q for q in comp_qs if 
+    (sel_topic == "All" or q.get("topic") == sel_topic) and 
+    (q.get("level") == sel_level)
+]
+
+# --- 6. MAIN QUIZ UI ---
+st.title(f"🚀 {sel_comp} Placement Drive")
+
+if not final_pool:
+    st.warning(f"No {sel_level} level questions found for {sel_topic} in {sel_comp}. Try changing the filters!")
+else:
+    # Reset question index if it goes out of bounds after changing filters
+    if st.session_state.q_no >= len(final_pool):
+        st.session_state.q_no = 0
+        
+    curr_q = final_pool[st.session_state.q_no]
+    
+    st.info(f"Question {st.session_state.q_no + 1} of {len(final_pool)} | {curr_q['topic']}")
+    st.write(f"### {curr_q['question']}")
+    
+    # Radio options
+    choice = st.radio("Choose the correct option:", curr_q["options"], key=f"q_{curr_q['id']}_{st.session_state.q_no}")
+    
+    col1, col2 = st.columns([1, 5])
+    with col1:
+        if st.button("Submit"):
+            if choice == curr_q["answer"]:
+                st.success("✅ Correct!")
+            else:
+                st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
+            with st.expander("See Explanation"):
+                st.write(curr_q["explanation"])
+                if "^" in curr_q["explanation"] or "/" in curr_q["explanation"]:
+                    st.latex(r"Result = \frac{base^{exponent}}{divisor}")
+                    
+    with col2:
+        if st.button("Next Question ➡"):
+            st.session_state.q_no = (st.session_state.q_no + 1) % len(final_pool)
+            st.rerun()
+
+# --- 7. ANALYTICS ---
+st.divider()
+st.subheader("📈 Progress Tracking")
+if st.session_state.user_stats["history"]:
+    df = pd.DataFrame(st.session_state.user_stats["history"])
+    st.line_chart(df.set_index("date")["score"])
+else:
+    st.caption("Your performance history will appear here once you complete sets.")
