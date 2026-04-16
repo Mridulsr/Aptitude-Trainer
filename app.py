@@ -905,3 +905,38 @@ if user_stats["history"]:
     st.plotly_chart(px.line(df, x="date", y="score"), use_container_width=True)
 else:
     st.caption("Complete a full set to see your progress graph here.")
+
+import random
+
+class QuestionBankGenerator:
+    def __init__(self, company_name):
+        self.company = company_name
+        self.topics = ["Arithmetic", "Logical", "Verbal", "Coding", "Puzzles"]
+        
+    def generate_100_questions(self):
+        pool = []
+        for i in range(1, 101):
+            # Define difficulty distribution
+            if i <= 40: level = "Easy"
+            elif i <= 80: level = "Medium"
+            else: level = "Hard/Advanced"
+                
+            topic = random.choice(self.topics)
+            
+            question = {
+                "id": i,
+                "company": self.company,
+                "level": level,
+                "topic": topic,
+                "question_template": f"Practice Question {i} for {self.company}",
+                "status": "Ready for Review"
+            }
+            pool.append(question)
+        return pool
+
+# To generate for all companies:
+companies = ["TCS", "Accenture", "Infosys", "Wipro", "Cognizant", "Amazon", "Google", "Goldman Sachs", "Capgemini", "IBM"]
+all_banks = {comp: QuestionBankGenerator(comp).generate_100_questions() for comp in companies}
+
+# Access example:
+print(f"Generated {len(all_banks['Google'])} questions for Google.")
