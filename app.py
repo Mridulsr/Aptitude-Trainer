@@ -840,8 +840,6 @@ QUESTIONS = [
     {"id": 2, "level": "Hard", "q": "Probability that a leap year has 53 Sundays?", "ans": "2/7"},
     {"id": 3, "level": "Advanced", "q": "80L milk, 8L replaced with water. Repeat 3 times. Final milk?", "ans": "58.32L"},
 ]
-]
-]
 
 # --- 2. STORAGE ENGINE ---
 def load_perf():
