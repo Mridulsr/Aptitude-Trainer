@@ -841,74 +841,52 @@ QUESTIONS = [
     {"id": 3, "level": "Advanced", "q": "80L milk, 8L replaced with water. Repeat 3 times. Final milk?", "ans": "58.32L"},
 ]
 
+# --- 1. STORAGE ENGINE (Must be defined BEFORE it is used) ---
+def load_perf():
+    if os.path.exists("stats.json"):
+        try:
+            with open("stats.json", "r") as f: 
+                return json.load(f)
+        except:
+            pass # If file is corrupted, return default
+    return {"streak": 0, "last_active": "", "history": []}
+
+def save_perf(data):
+    with open("stats.json", "w") as f: 
+        json.dump(data, f)
+
+# --- 2. APP CONFIG ---
+st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
+
+# --- 3. INITIALIZE STATE ---
+if 'user_stats' not in st.session_state:
+    st.session_state.user_stats = load_perf()
+
+# Streak logic
+today = str(date.today())
+if st.session_state.user_stats["last_active"] != today:
+    st.session_state.user_stats["streak"] += 1
+    st.session_state.user_stats["last_active"] = today
+    save_perf(st.session_state.user_stats)
+
 # --- 4. NAVIGATION & FILTERS ---
 with st.sidebar:
-    # 1. Initialize User Stats in Session State
-    if 'user_stats' not in st.session_state:
-        st.session_state.user_stats = load_perf()
-    
-    # Now use it safely
     st.title(f"🔥 Streak: {st.session_state.user_stats['streak']} Days")
     st.divider()
     
-    # 2. Company Filter
+    # 1. Company Filter
+    # Ensure QUESTIONS list is defined somewhere above this line!
     comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS if "company" in q)))
     sel_comp = st.selectbox("🎯 Target Company", comps)
     
-    # Filter questions by company first
     comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
 
-    # 3. Topic Filter
+    # 2. Topic Filter
     topics = sorted(list(set(q.get("topic", "General") for q in comp_qs)))
     topics = ["All"] + topics
     sel_topic = st.selectbox("📚 Select Topic", topics)
 
-    # 4. Difficulty Filter
+    # 3. Difficulty Filter
     sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
 
-# --- 5. DATA SELECTION ---
-# This runs after the sidebar selections are made
-final_pool = [
-    q for q in comp_qs if 
-    (sel_topic == "All" or q.get("topic") == sel_topic) and 
-    (q.get("level") == sel_level)
-]
-
-# --- 6. QUIZ UI ---
-st.title(f"🚀 {sel_comp} Placement Drive")
-
-if not final_pool:
-    st.info(f"No {sel_level} level questions available for {sel_topic} yet.")
-else:
-    if 'q_no' not in st.session_state: 
-        st.session_state.q_no = 0
-    
-    # Safety: Reset if the current index is out of bounds for the new pool
-    if st.session_state.q_no >= len(final_pool):
-        st.session_state.q_no = 0
-        
-    curr_q = final_pool[st.session_state.q_no]
-    
-    st.info(f"Topic: {curr_q['topic']} | Difficulty: {curr_q['level']}")
-    st.write(f"### {curr_q['question']}")
-    
-    # Unique key ensures radio buttons don't conflict when changing filters
-    choice = st.radio("Options:", curr_q["options"], key=f"rad_{sel_comp}_{curr_q['id']}")
-    
-    col1, col2 = st.columns([1, 4])
-    with col1:
-        if st.button("Submit"):
-            if choice == curr_q["answer"]:
-                st.success("✅ Correct!")
-            else:
-                st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
-            
-            with st.expander("Explanation"):
-                st.write(curr_q["explanation"])
-                if "P(" in curr_q["explanation"] or "^" in curr_q["explanation"]:
-                    st.latex(r"A = P(1 + \frac{R}{100})^t")
-                    
-    with col2:
-        if st.button("Next ➡"):
-            st.session_state.q_no = (st.session_state.q_no + 1) % len(final_pool)
-            st.rerun()
+# ... rest of your Quiz UI code ...
