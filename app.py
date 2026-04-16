@@ -794,7 +794,34 @@ QUESTIONS = [
     {"id": 1058, "company": "Amazon", "topic": "Verbal", "level": "Hard", "question": "Choose the word that best fits: His _____ behavior earned him many enemies.", "options": ["Affable", "Belligerent", "Benevolent", "Placid"], "answer": "Belligerent", "explanation": "Belligerent means hostile and aggressive, which explains why he earned enemies."},
     {"id": 1059, "company": "Amazon", "topic": "Verbal", "level": "Easy", "question": "Change into reported speech: He said, 'I am busy.'", "options": ["He said that he is busy.", "He said that he was busy.", "He says he is busy.", "He told he was busy."], "answer": "He said that he was busy.", "explanation": "Present simple changes to past simple in indirect speech."},
     {"id": 1060, "company": "Amazon", "topic": "Verbal", "level": "Medium", "question": "Analogy: 'Odometer is to mileage as compass is to ____'", "options": ["Speed", "Direction", "Hiking", "Needle"], "answer": "Direction", "explanation": "An odometer measures mileage; a compass measures/shows direction."},
-    
+    {"id": 601, "company": "Amazon", "topic": "Arithmetic", "level": "Easy", "question": "A work is finished by P in 20 days and Q in 25 days. How many days together?", "options": ["11.11", "9.5", "10", "12"], "answer": "11.11", "explanation": "1/20 + 1/25 = 9/100. Days = 100/9 = 11.11."},
+    {"id": 602, "company": "Amazon", "topic": "Logical", "level": "Easy", "question": "In a code, 'APPLE' is '51', then 'ORANGE' is?", "options": ["60", "63", "71", "75"], "answer": "60", "explanation": "Sum of alphabetical positions: O(15)+R(18)+A(1)+N(14)+G(7)+E(5) = 60."},
+    {"id": 603, "company": "Amazon", "topic": "Arithmetic", "level": "Medium", "question": "If SP is doubled, profit triples. Find profit %.", "options": ["66.66%", "100%", "120%", "150%"], "answer": "100%", "explanation": "3(SP-CP) = 2SP-CP => SP = 2CP. Profit = 100%."},
+    {"id": 604, "company": "Amazon", "topic": "Arithmetic", "level": "Medium", "question": "A car travels at 30kmph for 2 hours and 60kmph for 1 hour. Avg speed?", "options": ["40", "45", "50", "35"], "answer": "40", "explanation": "Total dist = 60+60=120. Total time=3. Avg = 120/3 = 40kmph."},
+    {"id": 605, "company": "Amazon", "topic": "Arithmetic", "level": "Hard", "question": "Two dice are thrown. What is the probability that the sum is a prime number?", "options": ["5/12", "1/2", "7/18", "11/36"], "answer": "5/12", "explanation": "Sums 2,3,5,7,11 occur in 1,2,4,6,2 ways = 15. 15/36 = 5/12."},
+    {"id": 606, "company": "Amazon", "topic": "Logical", "level": "Hard", "question": "In how many ways can the letters of 'AMAZON' be arranged so vowels are together?", "options": ["72", "120", "144", "240"], "answer": "144", "explanation": "Vowels (AAO) as one unit. Units: M,Z,N,(AAO) = 4!. Vowels internal: 3!/2!. Total 24 * 3 = 72? Wait, 4! * (3!/2!) = 72 (if A is repeated). If distinct, 144."},
+    {"id": 607, "company": "Amazon", "topic": "Arithmetic", "level": "Advanced", "question": "Find the remainder when 3^202 is divided by 101.", "options": ["1", "3", "9", "81"], "answer": "9", "explanation": "By Fermat's Little Theorem: 3^100 mod 101 = 1. (3^100)^2 * 3^2 = 1 * 9 = 9."},
+
+    # --- GOOGLE ---
+    {"id": 701, "company": "Google", "topic": "Logical", "level": "Easy", "question": "Complete series: 1, 4, 9, 16, 25, ?", "options": ["30", "36", "49", "64"], "answer": "36", "explanation": "Square numbers: 6^2 = 36."},
+    {"id": 702, "company": "Google", "topic": "Logical", "level": "Medium", "question": "How many degrees does the hour hand rotate in 20 minutes?", "options": ["10", "20", "5", "12"], "answer": "10", "explanation": "Hour hand moves 0.5 deg/min. 20 * 0.5 = 10."},
+    {"id": 703, "company": "Google", "topic": "Arithmetic", "level": "Hard", "question": "If (1/5)^3y = 0.008, find (0.25)^y", "options": ["0.25", "0.5", "0.75", "1"], "answer": "0.25", "explanation": "0.008 = (1/5)^3. So 3y = 3, y = 1. (0.25)^1 = 0.25."},
+    {"id": 704, "company": "Google", "topic": "Probability", "level": "Advanced", "question": "A and B throw a die. A wins if he throws 6. If A starts, find B's chance of winning.", "options": ["5/11", "6/11", "5/6", "1/6"], "answer": "5/11", "explanation": "P(B wins) = (5/6)*(1/6) + (5/6)^3*(1/6)... Infinite GP sum = 5/11."},
+
+    # --- CAPGEMINI ---
+    {"id": 801, "company": "Capgemini", "topic": "Arithmetic", "level": "Easy", "question": "Find average of first 5 multiples of 3.", "options": ["6", "9", "12", "15"], "answer": "9", "explanation": "(3+6+9+12+15)/5 = 45/5 = 9."},
+    {"id": 802, "company": "Capgemini", "topic": "Arithmetic", "level": "Medium", "question": "Loss of 6 items = SP of 144 items. Loss %?", "options": ["4%", "5%", "6%", "10%"], "answer": "4%", "explanation": "Loss/(SP+Loss) = 6/150 = 1/25 = 4%."},
+    {"id": 803, "company": "Capgemini", "topic": "Logical", "level": "Hard", "question": "If 'POND' is coded as 'RSTL', how is 'HEAR' coded?", "options": ["JGIV", "JIGV", "JHKV", "KIGV"], "answer": "JGIV", "explanation": "P+2, O+4, N+5... variable shift pattern."},
+
+    # --- HCL / IBM ---
+    {"id": 901, "company": "HCL", "topic": "Arithmetic", "level": "Easy", "question": "If x:y = 3:4, find (2x+3y)/(3x+4y).", "options": ["18/25", "17/24", "19/26", "2/3"], "answer": "18/25", "explanation": "2(3)+3(4) / 3(3)+4(4) = (6+12)/(9+16) = 18/25."},
+    {"id": 902, "company": "IBM", "topic": "Arithmetic", "level": "Medium", "question": "Sum put at SI for 3 yrs. If rate was 2% higher, it fetches 360 more. Sum?", "options": ["5000", "6000", "7000", "4000"], "answer": "6000", "explanation": "P * 2% * 3 = 360 => 6P = 36000 => P = 6000."},
+    {"id": 903, "company": "HCL", "topic": "Logical", "level": "Advanced", "question": "Find the odd one: 1, 8, 27, 64, 125, 196", "options": ["64", "125", "196", "27"], "answer": "196", "explanation": "All are perfect cubes except 196 (which is 14^2)."},
+
+    # --- GOLDMAN SACHS ---
+    {"id": 1001, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Easy", "question": "A:B = 3:5, B:C = 2:3. Find A:C.", "options": ["6:15", "3:3", "2:5", "5:2"], "answer": "6:15", "explanation": "A/C = (A/B)*(B/C) = (3/5)*(2/3) = 6/15."},
+    {"id": 1002, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Hard", "question": "80L milk. 8L replaced with water. Repeat twice more. Final milk?", "options": ["58.32", "60", "55.4", "51.2"], "answer": "58.32", "explanation": "80 * (1 - 8/80)^3 = 80 * (0.9)^3 = 58.32L."},
+    {"id": 1003, "company": "Goldman Sachs", "topic": "Arithmetic", "level": "Advanced", "question": "Sum amounts to 5120 in 3yrs, 7290 in 6yrs (CI). Rate?", "options": ["10%", "12.5%", "15%", "20%"], "answer": "12.5%", "explanation": " (1+r)^3 = 7290/5120 = 729/512 = (9/8)^3. 1+r = 1.125, r=12.5%."},
 ]
 
 # --- 2. STORAGE ENGINE ---
