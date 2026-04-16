@@ -941,4 +941,4 @@ if st.session_state.user_stats["history"]:
     fig = px.line(df, x="date", y="score", title="Score Over Time")
     st.plotly_chart(fig, use_container_width=True)
 else:
-    st.caption("Complete more questions to see your progress graph here."
+    st.caption("Complete more questions to see your progress graph here.")
