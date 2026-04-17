@@ -874,7 +874,6 @@ QUESTIONS = [
     {"id": 609, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What is a 'lambda' function?", "options": ["A multi-line function", "An anonymous one-line function", "A function that cleans memory", "A type of loop"], "answer": "An anonymous one-line function", "explanation": "Lambdas are small, unnamed functions defined with the lambda keyword."},
     {"id": 610, "company": "CGI", "topic": "Python", "level": "Medium", "question": "What does 'pip' stand for?", "options": ["Python Install Package", "Preferred Installer Program", "Python Integration Protocol", "Package Independent Python"], "answer": "Preferred Installer Program", "explanation": "It is the standard package manager for Python."},
 ]
-]
 
 # --- 3. APP CONFIG ---
 st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
