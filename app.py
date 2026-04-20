@@ -9,12 +9,11 @@ st.write(f"Direct path to project: {os.getcwd()}")
 
 # --- 1. DATABASE FUNCTIONS ---
 def init_db():
-    conn = sqlite3.connect('aptistreak.db')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS users (user_id TEXT PRIMARY KEY, streak INTEGER, last_active TEXT)''')
-    c.execute('''CREATE TABLE IF NOT EXISTS performance (user_id TEXT, date TEXT, score INTEGER)''')
-    conn.commit()
-    conn.close()
+    # This line finds the folder where app.py lives
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(BASE_DIR, 'aptistreak.db')
+    
+    conn = sqlite3.connect(db_path)
 
 def load_user_data(user_id):
     conn = sqlite3.connect('aptistreak.db')
