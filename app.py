@@ -4,7 +4,46 @@ import json
 import os
 from datetime import date
 import plotly.express as px
+import sqlite3
 
+# --- 1. DATABASE FUNCTIONS ---
+def init_db():
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS users (user_id TEXT PRIMARY KEY, streak INTEGER, last_active TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS performance (user_id TEXT, date TEXT, score INTEGER)''')
+    conn.commit()
+    conn.close()
+
+def load_user_data(user_id):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("SELECT streak, last_active FROM users WHERE user_id=?", (user_id,))
+    row = c.fetchone()
+    conn.close()
+    return row if row else (0, "Never")
+
+def save_user_action(user_id, streak, last_active):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("INSERT OR REPLACE INTO users VALUES (?, ?, ?)", (user_id, streak, last_active))
+    conn.commit()
+    conn.close()
+
+def log_score(user_id, date_str, score):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO performance VALUES (?, ?, ?)", (user_id, date_str, score))
+    conn.commit()
+    conn.close()
+
+def get_history(user_id):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("SELECT date, score FROM performance WHERE user_id=? ORDER BY date ASC", (user_id,))
+    rows = c.fetchall()
+    conn.close()
+    return [{"date": r[0], "score": r[1]} for r in rows]
 # --- 1. STORAGE ENGINE ---
 def load_perf():
     if os.path.exists("stats.json"):
