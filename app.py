@@ -9,9 +9,9 @@ st.write(f"Direct path to project: {os.getcwd()}")
 
 # --- 1. DATABASE FUNCTIONS ---
 def init_db():
-    # This line finds the folder where app.py lives
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(BASE_DIR, 'aptistreak.db')
+    # Forces the database to stay inside your project folder
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, 'aptistreak.db')
     
     conn = sqlite3.connect(db_path)
 
