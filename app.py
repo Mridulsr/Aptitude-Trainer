@@ -7,45 +7,43 @@ import plotly.express as px
 import sqlite3
 st.write(f"Direct path to project: {os.getcwd()}")
 
-# --- DATABASE CONFIG ---
-# This ensures the database file is always in your project folder
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, 'aptistreak.db')
-
+# --- 1. DATABASE FUNCTIONS ---
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    # Table for user stats (Streaks)
-    c.execute('''CREATE TABLE IF NOT EXISTS users 
-                 (user_id TEXT PRIMARY KEY, streak INTEGER, last_active TEXT)''')
-    # Table for performance (History)
-    c.execute('''CREATE TABLE IF NOT EXISTS performance 
-                 (user_id TEXT, date TEXT, score INTEGER)''')
-    conn.commit()
-    conn.close()
+    # Forces the database to stay inside your project folder
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, 'aptistreak.db')
+    
+    conn = sqlite3.connect(db_path)
 
-def save_user_stats(user_id, streak, last_active):
-    conn = sqlite3.connect(DB_PATH)
+def load_user_data(user_id):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("SELECT streak, last_active FROM users WHERE user_id=?", (user_id,))
+    row = c.fetchone()
+    conn.close()
+    return row if row else (0, "Never")
+
+def save_user_action(user_id, streak, last_active):
+    conn = sqlite3.connect('aptistreak.db')
     c = conn.cursor()
     c.execute("INSERT OR REPLACE INTO users VALUES (?, ?, ?)", (user_id, streak, last_active))
     conn.commit()
     conn.close()
 
-def log_score(user_id, score):
-    conn = sqlite3.connect(DB_PATH)
+def log_score(user_id, date_str, score):
+    conn = sqlite3.connect('aptistreak.db')
     c = conn.cursor()
-    today = str(date.today())
-    c.execute("INSERT INTO performance VALUES (?, ?, ?)", (user_id, today, score))
+    c.execute("INSERT INTO performance VALUES (?, ?, ?)", (user_id, date_str, score))
     conn.commit()
     conn.close()
 
-def get_user_history(user_id):
-    conn = sqlite3.connect(DB_PATH)
+def get_history(user_id):
+    conn = sqlite3.connect('aptistreak.db')
     c = conn.cursor()
-    c.execute("SELECT date, score FROM performance WHERE user_id=?", (user_id,))
-    data = c.fetchall()
+    c.execute("SELECT date, score FROM performance WHERE user_id=? ORDER BY date ASC", (user_id,))
+    rows = c.fetchall()
     conn.close()
-    return [{"date": row[0], "score": row[1]} for row in data]
+    return [{"date": r[0], "score": r[1]} for r in rows]
 # --- 1. STORAGE ENGINE ---
 def load_perf():
     if os.path.exists("stats.json"):
@@ -59,18 +57,6 @@ def load_perf():
 def save_perf(data):
     with open("stats.json", "w") as f: 
         json.dump(data, f)
-# Define your functions BEFORE calling them
-def load_user_data(user_id):
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(BASE_DIR, 'aptistreak.db')
-    conn = sqlite3.connect(db_path)
-    c = conn.cursor()
-    c.execute("SELECT streak, last_active FROM users WHERE user_id=?", (user_id,))
-    row = c.fetchone()
-    conn.close()
-    return row if row else (0, "Never")
-
-# Add your other functions like init_db(), log_score(), etc. here
 
 # --- 1. THE COMPLETE DATASET ---
 # CRITICAL: Ensure every { } block ends with a comma, and the final list ends with ]
@@ -974,6 +960,19 @@ QUESTIONS = [
     {"id": 1009, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What is the purpose of sys.setrecursionlimit()?", "options": ["To speed up recursion", "To change the maximum depth of the Python interpreter stack", "To stop a loop", "To limit memory usage"], "answer": "To change the maximum depth of the Python interpreter stack", "explanation": "It allows deep recursive calls that would otherwise hit a RecursionError."},
     {"id": 1010, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What does the 'nonlocal' keyword do?", "options": ["Creates a global variable", "Modifies a variable in the nearest enclosing scope (not global)", "Imports a local module", "None of the above"], "answer": "Modifies a variable in the nearest enclosing scope (not global)", "explanation": "Nonlocal is used in nested functions to reference variables in the parent function's scope."},
 ]
+
+# --- 3. APP CONFIG & DB INIT ---
+st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
+init_db()
+USER_ID = "guest_pro"
+
+if 'user_stats' not in st.session_state:
+    streak, last_active = load_user_data(USER_ID)
+    st.session_state.user_stats = {
+        "streak": streak,
+        "last_active": last_active,
+        "history": get_history(USER_ID)
+    }
 
 # Streak logic
 today = str(date.today())
