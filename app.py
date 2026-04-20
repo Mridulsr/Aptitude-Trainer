@@ -1009,8 +1009,8 @@ else:
     col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("Submit"):
-    if choice == curr_q["answer"]:
-        st.success("✅ Correct!")
+            if choice == curr_q["answer"]:
+                st.success("✅ Correct!")
         # Example: Log a point to the DB
         log_score(USER_ID, today, 10) 
         # Refresh history in session state for the graph
