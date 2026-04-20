@@ -5,6 +5,7 @@ import os
 from datetime import date
 import plotly.express as px
 import sqlite3
+st.write(f"Direct path to project: {os.getcwd()}")
 
 # --- 1. DATABASE FUNCTIONS ---
 def init_db():
