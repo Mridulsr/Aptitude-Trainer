@@ -1009,10 +1009,12 @@ else:
     col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("Submit"):
-            if choice == curr_q["answer"]:
-    st.success("✅ Correct!")
-else: # Perfectly aligned with 'if'
-    st.error("❌ Wrong!")
+    if choice == curr_q["answer"]:
+        st.success("✅ Correct!")
+        log_score(USER_ID, today, 10) # Must be indented
+        st.session_state.user_stats["history"] = get_history(USER_ID) # Must be indented
+    else:
+        st.error(f"❌ Wrong!")
             
             with st.expander("Explanation"):
                 st.write(curr_q["explanation"])
