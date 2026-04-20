@@ -978,16 +978,24 @@ QUESTIONS = [
 
 # --- 3. APP CONFIG & DB INIT ---
 st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
-# Now you can safely call the functions
-USER_ID = "guest_pro" 
-streak, last_active = load_user_data(USER_ID) # This will now work!
 
+# 1. Initialize the Database tables first!
+init_db() 
+
+# 2. Set the User ID
+USER_ID = "guest_pro" 
+
+# 3. Handle Session State and Database Sync
 if 'user_stats' not in st.session_state:
-    streak, last_active = load_user_data(USER_ID)
+    # Fetch data from backend
+    streak_val, last_active_val = load_user_data(USER_ID)
+    history_data = get_history(USER_ID)
+    
+    # Store in Streamlit's memory
     st.session_state.user_stats = {
-        "streak": streak,
-        "last_active": last_active,
-        "history": get_history(USER_ID)
+        "streak": streak_val,
+        "last_active": last_active_val,
+        "history": history_data
     }
 
 # Streak logic
