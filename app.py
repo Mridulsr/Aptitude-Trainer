@@ -975,10 +975,12 @@ QUESTIONS = [
     {"id": 1010, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What does the 'nonlocal' keyword do?", "options": ["Creates a global variable", "Modifies a variable in the nearest enclosing scope (not global)", "Imports a local module", "None of the above"], "answer": "Modifies a variable in the nearest enclosing scope (not global)", "explanation": "Nonlocal is used in nested functions to reference variables in the parent function's scope."},
 ]
 
+
 # --- 3. APP CONFIG & DB INIT ---
 st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
-init_db()
-USER_ID = "guest_pro"
+# Now you can safely call the functions
+USER_ID = "guest_pro" 
+streak, last_active = load_user_data(USER_ID) # This will now work!
 
 if 'user_stats' not in st.session_state:
     streak, last_active = load_user_data(USER_ID)
