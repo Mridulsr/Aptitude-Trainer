@@ -962,6 +962,30 @@ final_pool = [
     (q.get("level") == sel_level)
 ]
 
+# --- DATABASE INITIALIZATION ---
+init_db()
+USER_ID = "guest_pro" # You can extend this to a login system later
+
+# --- SESSION STATE & DB SYNC ---
+if 'user_stats' not in st.session_state:
+    # Load from DB instead of JSON file
+    db_data = load_user_data(USER_ID)
+    st.session_state.user_stats = {
+        "streak": db_data["streak"],
+        "last_active": db_data["last_active"],
+        "history": get_history(USER_ID)
+    }
+
+# --- STREAK LOGIC ---
+today = str(date.today())
+if st.session_state.user_stats["last_active"] != today:
+    # Update Local State
+    st.session_state.user_stats["streak"] += 1
+    st.session_state.user_stats["last_active"] = today
+    
+    # Update Database
+    save_user_action(USER_ID, st.session_state.user_stats["streak"], today)
+
 # --- 6. QUIZ UI ---
 st.title(f"🚀 {sel_comp} Placement Drive")
 
@@ -985,10 +1009,14 @@ else:
     col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("Submit"):
-            if choice == curr_q["answer"]:
-                st.success("✅ Correct!")
-            else:
-                st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
+    if choice == curr_q["answer"]:
+        st.success("✅ Correct!")
+        # Example: Log a point to the DB
+        log_score(USER_ID, today, 10) 
+        # Refresh history in session state for the graph
+        st.session_state.user_stats["history"] = get_history(USER_ID)
+    else:
+        st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
             
             with st.expander("Explanation"):
                 st.write(curr_q["explanation"])
