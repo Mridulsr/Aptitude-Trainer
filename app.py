@@ -5,6 +5,7 @@ import os
 from datetime import date
 import plotly.express as px
 import sqlite3
+import psycopg2
 st.write(f"Direct path to project: {os.getcwd()}")
 
 # --- 1. DATABASE FUNCTIONS ---
@@ -57,6 +58,11 @@ def load_perf():
 def save_perf(data):
     with open("stats.json", "w") as f: 
         json.dump(data, f)
+
+def get_db_connection():
+    # It pulls the URL from your secrets or environment variables
+    conn = psycopg2.connect(st.secrets["DATABASE_URL"])
+    return conn
 
 # --- 1. THE COMPLETE DATASET ---
 # CRITICAL: Ensure every { } block ends with a comma, and the final list ends with ]
