@@ -975,29 +975,6 @@ QUESTIONS = [
     {"id": 1010, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What does the 'nonlocal' keyword do?", "options": ["Creates a global variable", "Modifies a variable in the nearest enclosing scope (not global)", "Imports a local module", "None of the above"], "answer": "Modifies a variable in the nearest enclosing scope (not global)", "explanation": "Nonlocal is used in nested functions to reference variables in the parent function's scope."},
 ]
 
-
-# --- 3. APP CONFIG & DB INIT ---
-st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
-
-# 1. Initialize the Database tables first!
-init_db() 
-
-# 2. Set the User ID
-USER_ID = "guest_pro" 
-
-# 3. Handle Session State and Database Sync
-if 'user_stats' not in st.session_state:
-    # Fetch data from backend
-    streak_val, last_active_val = load_user_data(USER_ID)
-    history_data = get_history(USER_ID)
-    
-    # Store in Streamlit's memory
-    st.session_state.user_stats = {
-        "streak": streak_val,
-        "last_active": last_active_val,
-        "history": history_data
-    }
-
 # Streak logic
 today = str(date.today())
 if st.session_state.user_stats["last_active"] != today:
