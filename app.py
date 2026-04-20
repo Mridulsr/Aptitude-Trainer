@@ -961,37 +961,36 @@ QUESTIONS = [
     {"id": 1010, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What does the 'nonlocal' keyword do?", "options": ["Creates a global variable", "Modifies a variable in the nearest enclosing scope (not global)", "Imports a local module", "None of the above"], "answer": "Modifies a variable in the nearest enclosing scope (not global)", "explanation": "Nonlocal is used in nested functions to reference variables in the parent function's scope."},
 ]
 
-# --- 3. APP CONFIG ---
+# --- 3. APP CONFIG & DB INIT ---
 st.set_page_config(page_title="AptiStreak Pro 2026", layout="wide")
+init_db()
+USER_ID = "guest_pro"
 
 if 'user_stats' not in st.session_state:
-    st.session_state.user_stats = load_perf()
+    streak, last_active = load_user_data(USER_ID)
+    st.session_state.user_stats = {
+        "streak": streak,
+        "last_active": last_active,
+        "history": get_history(USER_ID)
+    }
 
 # Streak logic
 today = str(date.today())
 if st.session_state.user_stats["last_active"] != today:
     st.session_state.user_stats["streak"] += 1
     st.session_state.user_stats["last_active"] = today
-    save_perf(st.session_state.user_stats)
+    save_user_action(USER_ID, st.session_state.user_stats["streak"], today)
 
 # --- 4. NAVIGATION & FILTERS ---
 with st.sidebar:
     st.title(f"🔥 Streak: {st.session_state.user_stats['streak']} Days")
     st.divider()
-    
-    # 1. Company Filter
     comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS)))
     sel_comp = st.selectbox("🎯 Target Company", comps)
-    
-    # Filter by Company
     comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
-
-    # 2. Topic Filter
     topics = sorted(list(set(q.get("topic", "General") for q in comp_qs)))
     topics = ["All"] + topics
     sel_topic = st.selectbox("📚 Select Topic", topics)
-
-    # 3. Difficulty Filter
     sel_level = st.select_slider("⚡ Difficulty", options=["Easy", "Medium", "Hard", "Advanced"])
 
 # --- 5. DATA SELECTION ---
@@ -1001,65 +1000,35 @@ final_pool = [
     (q.get("level") == sel_level)
 ]
 
-# --- DATABASE INITIALIZATION ---
-init_db()
-USER_ID = "guest_pro" # You can extend this to a login system later
-
-# --- SESSION STATE & DB SYNC ---
-if 'user_stats' not in st.session_state:
-    # Load from DB instead of JSON file
-    db_data = load_user_data(USER_ID)
-    st.session_state.user_stats = {
-        "streak": db_data["streak"],
-        "last_active": db_data["last_active"],
-        "history": get_history(USER_ID)
-    }
-
-# --- STREAK LOGIC ---
-today = str(date.today())
-if st.session_state.user_stats["last_active"] != today:
-    # Update Local State
-    st.session_state.user_stats["streak"] += 1
-    st.session_state.user_stats["last_active"] = today
-    
-    # Update Database
-    save_user_action(USER_ID, st.session_state.user_stats["streak"], today)
-
 # --- 6. QUIZ UI ---
 st.title(f"🚀 {sel_comp} Placement Drive")
 
 if not final_pool:
-    st.info(f"No {sel_level} level questions available for {sel_topic} yet. Try another combination!")
+    st.info(f"No {sel_level} level questions available. Try another combination!")
 else:
     if 'q_no' not in st.session_state: st.session_state.q_no = 0
-    
-    # Reset q_no if it's out of bounds for the current filtered pool
-    if st.session_state.q_no >= len(final_pool):
-        st.session_state.q_no = 0
+    if st.session_state.q_no >= len(final_pool): st.session_state.q_no = 0
         
     curr_q = final_pool[st.session_state.q_no]
-    
     st.info(f"Topic: {curr_q['topic']} | Difficulty: {curr_q['level']}")
     st.write(f"### {curr_q['question']}")
     
-    # Use a unique key based on ID and index to keep radio state clean
     choice = st.radio("Options:", curr_q["options"], key=f"rad_{curr_q['id']}")
     
     col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("Submit"):
-    if choice == curr_q["answer"]:
-        st.success("✅ Correct!")
-        log_score(USER_ID, today, 10) # Must be indented
-        st.session_state.user_stats["history"] = get_history(USER_ID) # Must be indented
-    else:
-        st.error(f"❌ Wrong!")
+            # ALL LOGIC BELOW IS NOW PROPERLY INDENTED
+            if choice == curr_q["answer"]:
+                st.success("✅ Correct!")
+                log_score(USER_ID, today, 10)
+                st.session_state.user_stats["history"] = get_history(USER_ID)
+            else:
+                st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
             
             with st.expander("Explanation"):
                 st.write(curr_q["explanation"])
-                if any(x in curr_q["explanation"] for x in ["^", "/", "P("]):
-                    st.latex(r"x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}")
-                    
+
     with col2:
         if st.button("Next ➡"):
             st.session_state.q_no = (st.session_state.q_no + 1) % len(final_pool)
@@ -1073,4 +1042,4 @@ if st.session_state.user_stats["history"]:
     fig = px.line(df, x="date", y="score", title="Score Over Time")
     st.plotly_chart(fig, use_container_width=True)
 else:
-    st.caption("Complete more questions to see your progress graph here.")
+    st.caption("Complete questions to see your progress.")
