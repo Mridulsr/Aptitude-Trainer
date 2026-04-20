@@ -1045,20 +1045,3 @@ if st.session_state.user_stats["history"]:
     st.plotly_chart(fig, use_container_width=True)
 else:
     st.caption("Complete questions to see your progress.")
-
-
-# Inside your col1 with st.button("Submit"):
-if st.button("Submit"):
-    if choice == curr_q["answer"]:
-        st.success("✅ Correct!")
-        
-        # --- BACKEND CONNECTION START ---
-        # 1. Log the 10 points to the database
-        log_score(USER_ID, 10) 
-        
-        # 2. Update the session state so the graph refreshes immediately
-        st.session_state.user_stats["history"] = get_user_history(USER_ID)
-        # --- BACKEND CONNECTION END ---
-        
-    else:
-        st.error(f"❌ Wrong! Correct answer was: {curr_q['answer']}")
