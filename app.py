@@ -7,43 +7,45 @@ import plotly.express as px
 import sqlite3
 st.write(f"Direct path to project: {os.getcwd()}")
 
-# --- 1. DATABASE FUNCTIONS ---
+# --- DATABASE CONFIG ---
+# This ensures the database file is always in your project folder
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'aptistreak.db')
+
 def init_db():
-    # Forces the database to stay inside your project folder
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(base_dir, 'aptistreak.db')
-    
-    conn = sqlite3.connect(db_path)
-
-def load_user_data(user_id):
-    conn = sqlite3.connect('aptistreak.db')
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    c.execute("SELECT streak, last_active FROM users WHERE user_id=?", (user_id,))
-    row = c.fetchone()
+    # Table for user stats (Streaks)
+    c.execute('''CREATE TABLE IF NOT EXISTS users 
+                 (user_id TEXT PRIMARY KEY, streak INTEGER, last_active TEXT)''')
+    # Table for performance (History)
+    c.execute('''CREATE TABLE IF NOT EXISTS performance 
+                 (user_id TEXT, date TEXT, score INTEGER)''')
+    conn.commit()
     conn.close()
-    return row if row else (0, "Never")
 
-def save_user_action(user_id, streak, last_active):
-    conn = sqlite3.connect('aptistreak.db')
+def save_user_stats(user_id, streak, last_active):
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("INSERT OR REPLACE INTO users VALUES (?, ?, ?)", (user_id, streak, last_active))
     conn.commit()
     conn.close()
 
-def log_score(user_id, date_str, score):
-    conn = sqlite3.connect('aptistreak.db')
+def log_score(user_id, score):
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    c.execute("INSERT INTO performance VALUES (?, ?, ?)", (user_id, date_str, score))
+    today = str(date.today())
+    c.execute("INSERT INTO performance VALUES (?, ?, ?)", (user_id, today, score))
     conn.commit()
     conn.close()
 
-def get_history(user_id):
-    conn = sqlite3.connect('aptistreak.db')
+def get_user_history(user_id):
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    c.execute("SELECT date, score FROM performance WHERE user_id=? ORDER BY date ASC", (user_id,))
-    rows = c.fetchall()
+    c.execute("SELECT date, score FROM performance WHERE user_id=?", (user_id,))
+    data = c.fetchall()
     conn.close()
-    return [{"date": r[0], "score": r[1]} for r in rows]
+    return [{"date": row[0], "score": row[1]} for row in data]
 # --- 1. STORAGE ENGINE ---
 def load_perf():
     if os.path.exists("stats.json"):
@@ -1043,3 +1045,20 @@ if st.session_state.user_stats["history"]:
     st.plotly_chart(fig, use_container_width=True)
 else:
     st.caption("Complete questions to see your progress.")
+
+
+# Inside your col1 with st.button("Submit"):
+if st.button("Submit"):
+    if choice == curr_q["answer"]:
+        st.success("✅ Correct!")
+        
+        # --- BACKEND CONNECTION START ---
+        # 1. Log the 10 points to the database
+        log_score(USER_ID, 10) 
+        
+        # 2. Update the session state so the graph refreshes immediately
+        st.session_state.user_stats["history"] = get_user_history(USER_ID)
+        # --- BACKEND CONNECTION END ---
+        
+    else:
+        st.error(f"❌ Wrong! Correct answer was: {curr_q['answer']}")
