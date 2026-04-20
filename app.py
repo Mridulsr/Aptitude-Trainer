@@ -1010,13 +1010,9 @@ else:
     with col1:
         if st.button("Submit"):
             if choice == curr_q["answer"]:
-                st.success("✅ Correct!")
-        # Example: Log a point to the DB
-        log_score(USER_ID, today, 10) 
-        # Refresh history in session state for the graph
-        st.session_state.user_stats["history"] = get_history(USER_ID)
-    else:
-        st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
+    st.success("✅ Correct!")
+else: # Perfectly aligned with 'if'
+    st.error("❌ Wrong!")
             
             with st.expander("Explanation"):
                 st.write(curr_q["explanation"])
