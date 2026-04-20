@@ -59,6 +59,18 @@ def load_perf():
 def save_perf(data):
     with open("stats.json", "w") as f: 
         json.dump(data, f)
+# Define your functions BEFORE calling them
+def load_user_data(user_id):
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(BASE_DIR, 'aptistreak.db')
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute("SELECT streak, last_active FROM users WHERE user_id=?", (user_id,))
+    row = c.fetchone()
+    conn.close()
+    return row if row else (0, "Never")
+
+# Add your other functions like init_db(), log_score(), etc. here
 
 # --- 1. THE COMPLETE DATASET ---
 # CRITICAL: Ensure every { } block ends with a comma, and the final list ends with ]
