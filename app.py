@@ -5,25 +5,45 @@ import os
 from datetime import date
 import plotly.express as px
 import sqlite3
-import psycopg2
+st.write(f"Direct path to project: {os.getcwd()}")
 
-def get_connection():
-    # This pulls the URL safely from your secrets
-    return psycopg2.connect(st.secrets["DATABASE_URL"])
-
+# --- 1. DATABASE FUNCTIONS ---
 def init_db():
-    conn = get_connection()
-    cur = conn.cursor()
-    # Postgres syntax is 99% the same as SQLite
-    cur.execute('''CREATE TABLE IF NOT EXISTS users 
-                 (user_id TEXT PRIMARY KEY, streak INTEGER, last_active TEXT)''')
-    cur.execute('''CREATE TABLE IF NOT EXISTS performance 
-                 (user_id TEXT, date TEXT, score INTEGER)''')
+    # Forces the database to stay inside your project folder
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, 'aptistreak.db')
+    
+    conn = sqlite3.connect(db_path)
+
+def load_user_data(user_id):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("SELECT streak, last_active FROM users WHERE user_id=?", (user_id,))
+    row = c.fetchone()
+    conn.close()
+    return row if row else (0, "Never")
+
+def save_user_action(user_id, streak, last_active):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("INSERT OR REPLACE INTO users VALUES (?, ?, ?)", (user_id, streak, last_active))
     conn.commit()
-    cur.close()
     conn.close()
 
+def log_score(user_id, date_str, score):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO performance VALUES (?, ?, ?)", (user_id, date_str, score))
+    conn.commit()
+    conn.close()
 
+def get_history(user_id):
+    conn = sqlite3.connect('aptistreak.db')
+    c = conn.cursor()
+    c.execute("SELECT date, score FROM performance WHERE user_id=? ORDER BY date ASC", (user_id,))
+    rows = c.fetchall()
+    conn.close()
+    return [{"date": r[0], "score": r[1]} for r in rows]
 # --- 1. STORAGE ENGINE ---
 def load_perf():
     if os.path.exists("stats.json"):
@@ -37,11 +57,6 @@ def load_perf():
 def save_perf(data):
     with open("stats.json", "w") as f: 
         json.dump(data, f)
-
-def get_db_connection():
-    # It pulls the URL from your secrets or environment variables
-    conn = psycopg2.connect(st.secrets["DATABASE_URL"])
-    return conn
 
 # --- 1. THE COMPLETE DATASET ---
 # CRITICAL: Ensure every { } block ends with a comma, and the final list ends with ]
