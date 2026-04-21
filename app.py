@@ -5,7 +5,6 @@ import os
 from datetime import date
 import plotly.express as px
 import sqlite3
-st.write(f"Direct path to project: {os.getcwd()}")
 
 # --- 1. DATABASE FUNCTIONS ---
 def init_db():
@@ -14,6 +13,14 @@ def init_db():
     db_path = os.path.join(base_dir, 'aptistreak.db')
     
     conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    # Create tables if they don't exist
+    c.execute('''CREATE TABLE IF NOT EXISTS users 
+                 (user_id TEXT PRIMARY KEY, streak INTEGER, last_active TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS performance 
+                 (user_id TEXT, date TEXT, score INTEGER)''')
+    conn.commit()
+    conn.close()
 
 def load_user_data(user_id):
     conn = sqlite3.connect('aptistreak.db')
@@ -44,23 +51,32 @@ def get_history(user_id):
     rows = c.fetchall()
     conn.close()
     return [{"date": r[0], "score": r[1]} for r in rows]
-# --- 1. STORAGE ENGINE ---
-def load_perf():
-    if os.path.exists("stats.json"):
-        try:
-            with open("stats.json", "r") as f: 
-                return json.load(f)
-        except:
-            pass
-    return {"streak": 0, "last_active": "", "history": []}
 
-def save_perf(data):
-    with open("stats.json", "w") as f: 
-        json.dump(data, f)
+# --- 2. INITIALIZATION ---
+init_db()
+USER_ID = "guest_user"
+today = str(date.today())
+
+# Load data from DB to initialize Session State
+db_streak, db_last_active = load_user_data(USER_ID)
+
+if "user_stats" not in st.session_state:
+    st.session_state.user_stats = {
+        "streak": db_streak,
+        "last_active": db_last_active,
+        "history": get_history(USER_ID)
+    }
+
+# --- 3. STREAK LOGIC ---
+if st.session_state.user_stats["last_active"] != today:
+    st.session_state.user_stats["streak"] += 1
+    st.session_state.user_stats["last_active"] = today
+    save_user_action(USER_ID, st.session_state.user_stats["streak"], today)
 
 # --- 1. THE COMPLETE DATASET ---
 # CRITICAL: Ensure every { } block ends with a comma, and the final list ends with ]
-QUESTIONS = [
+if "QUESTIONS" not in globals():
+    QUESTIONS = [
     {"id": 1, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the unit digit in (7^95 - 3^58)?", "options": ["0", "4", "6", "7"], "answer": "4", "explanation": "7^95 ends in 3; 3^58 ends in 9. 13-9=4."},
     {"id": 102, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "The sum of two numbers is 25 and their difference is 13. Find their product.", "options": ["104", "114", "315", "325"], "answer": "114", "explanation": "x+y=25, x-y=13 => x=19, y=6. 19*6=114."},
     {"id": 110, "company": "TCS", "topic": "Arithmetic", "level": "Easy", "question": "What is the sum of the first 15 odd numbers?", "options": ["225", "200", "196", "256"], "answer": "225", "explanation": "Sum of first n odd numbers is n^2. 15^2 = 225."},
@@ -961,17 +977,13 @@ QUESTIONS = [
     {"id": 1010, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What does the 'nonlocal' keyword do?", "options": ["Creates a global variable", "Modifies a variable in the nearest enclosing scope (not global)", "Imports a local module", "None of the above"], "answer": "Modifies a variable in the nearest enclosing scope (not global)", "explanation": "Nonlocal is used in nested functions to reference variables in the parent function's scope."},
 ]
 
-today = str(date.today())
-if st.session_state.user_stats["last_active"] != today:
-    st.session_state.user_stats["streak"] += 1
-    st.session_state.user_stats["last_active"] = today
-    save_user_action(USER_ID, st.session_state.user_stats["streak"], today)
 # --- 4. NAVIGATION & FILTERS ---
 with st.sidebar:
     st.title(f"🔥 Streak: {st.session_state.user_stats['streak']} Days")
     st.divider()
     comps = sorted(list(set(q.get("company", "Unknown") for q in QUESTIONS)))
     sel_comp = st.selectbox("🎯 Target Company", comps)
+    
     comp_qs = [q for q in QUESTIONS if q.get("company") == sel_comp]
     topics = sorted(list(set(q.get("topic", "General") for q in comp_qs)))
     topics = ["All"] + topics
@@ -1003,10 +1015,10 @@ else:
     col1, col2 = st.columns([1, 4])
     with col1:
         if st.button("Submit"):
-            # ALL LOGIC BELOW IS NOW PROPERLY INDENTED
             if choice == curr_q["answer"]:
                 st.success("✅ Correct!")
                 log_score(USER_ID, today, 10)
+                # Refresh history in session state
                 st.session_state.user_stats["history"] = get_history(USER_ID)
             else:
                 st.error(f"❌ Wrong! Correct: {curr_q['answer']}")
