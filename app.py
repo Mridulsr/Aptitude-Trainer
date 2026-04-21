@@ -961,13 +961,11 @@ QUESTIONS = [
     {"id": 1010, "company": "CGI", "topic": "Python", "level": "Advanced", "question": "What does the 'nonlocal' keyword do?", "options": ["Creates a global variable", "Modifies a variable in the nearest enclosing scope (not global)", "Imports a local module", "None of the above"], "answer": "Modifies a variable in the nearest enclosing scope (not global)", "explanation": "Nonlocal is used in nested functions to reference variables in the parent function's scope."},
 ]
 
-# Streak logic
 today = str(date.today())
 if st.session_state.user_stats["last_active"] != today:
     st.session_state.user_stats["streak"] += 1
     st.session_state.user_stats["last_active"] = today
     save_user_action(USER_ID, st.session_state.user_stats["streak"], today)
-
 # --- 4. NAVIGATION & FILTERS ---
 with st.sidebar:
     st.title(f"🔥 Streak: {st.session_state.user_stats['streak']} Days")
