@@ -1,10 +1,9 @@
-Link https://aptitude-trainer-ww52k5fca9njn9axqvacjp.streamlit.app/
 # ⚡ AptiStreak - Daily Aptitude & Coding Practice Tracker
 
 AptiStreak is a Streamlit-based web application designed to help students and job seekers crack corporate placement exams (TCS, Infosys, Wipro, Accenture, Cognizant, Amazon, Google, etc.). It features an interactive quiz dashboard across multiple difficulty levels, tracks daily practice streaks using a persistent SQLite backend, and visualizes preparation metrics.
 
 ## 🚀 Live Demo
-🔗 **Deploy your app to Streamlit Community Cloud and paste the link here!** e.g., [https://aptistreak.streamlit.app](https://aptistreak.streamlit.app)
+🔗 **Access the live web app here:** [AptiStreak Live Dashboard](https://aptitude-trainer-ww52k5fca9njn9axqvacjp.streamlit.app/)
 
 ---
 
@@ -27,9 +26,11 @@ AptiStreak is a Streamlit-based web application designed to help students and jo
 
 ## 📂 Project Structure
 ```text
-aptistreak/
-│
-├── app.py                 # Main Streamlit application file
-├── aptistreak.db          # SQLite Database (Auto-generated on first run)
+├── .devcontainer/         # Codespaces and docker container environment setup
+├── app.py                 # Main Streamlit UI and app gateway
+├── db_manager.py          # Database operations handler & connection abstraction
+├── setup_db.py            # Initialization script to build initial database schemas
+├── find_my_db.py          # Diagnostic utility to track the localized database path
+├── fix.py                 # Schema maintenance or data patch utility script
 ├── requirements.txt       # Project python dependencies
 └── README.md              # Project documentation
